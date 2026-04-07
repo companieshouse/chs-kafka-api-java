@@ -22,18 +22,17 @@ module "ecs_service" {
   source = "git@github.com:companieshouse/terraform-modules//aws/ecs/ecs-service?ref=1.0.370"
 
   # Environmental configuration
-  environment             = var.environment
-  aws_region              = var.aws_region
-  aws_profile             = var.aws_profile
-  vpc_id                  = data.aws_vpc.vpc.id
-  ecs_cluster_id          = data.aws_ecs_cluster.ecs_cluster.id
-  task_execution_role_arn = data.aws_iam_role.ecs_cluster_iam_role.arn
-  batch_service           = true
+  environment               = var.environment
+  aws_region                = var.aws_region
+  aws_profile               = var.aws_profile
+  vpc_id                    = data.aws_vpc.vpc.id
+  ecs_cluster_id            = data.aws_ecs_cluster.ecs_cluster.id
+  task_execution_role_arn   = data.aws_iam_role.ecs_cluster_iam_role.arn
 
   # Load balancer configuration
-  lb_listener_arn                   = data.aws_lb_listener.service_lb_listener.arn
-  lb_listener_rule_priority         = local.lb_listener_rule_priority
-  lb_listener_paths                 = local.lb_listener_paths
+  lb_listener_arn           = data.aws_lb_listener.service_lb_listener.arn
+  lb_listener_rule_priority = local.lb_listener_rule_priority
+  lb_listener_paths         = local.lb_listener_paths
 
   # eric options for eric running API module
   use_eric_reverse_proxy    = true
@@ -82,7 +81,7 @@ module "ecs_service" {
   use_set_environment_files = local.use_set_environment_files
 
   # Cloudwatch
-  cloudwatch_alarms_enabled               = var.cloudwatch_alarms_enabled
+  cloudwatch_alarms_enabled = var.cloudwatch_alarms_enabled
 }
 
 
