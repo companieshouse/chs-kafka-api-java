@@ -1,4 +1,3 @@
-
 data "vault_generic_secret" "stack_secrets" {
   path = "applications/${var.aws_profile}/${var.environment}/${local.stack_name}-stack"
 }
@@ -51,8 +50,4 @@ data "aws_ssm_parameters_by_path" "global_secrets" {
 data "aws_ssm_parameter" "global_secret" {
   for_each = toset(data.aws_ssm_parameters_by_path.global_secrets.names)
   name     = each.key
-}
-
-data "vault_generic_secret" "shared_s3" {
-  path = "aws-accounts/shared-services/s3"
 }
