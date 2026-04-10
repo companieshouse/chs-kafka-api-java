@@ -46,6 +46,12 @@
                 <artifactId>avro</artifactId>
                 <version>1.12.1</version>
             </dependency>
+            <!-- GHSA-2m67-wjpj-xhg9 -->
+            <dependency>
+                <groupId>tools.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>3.1.1</version>
+            </dependency>
             <!-- end fix versions for vulnerable transitive dependencies -->
         </dependencies>
     </dependencyManagement>
@@ -111,6 +117,15 @@
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+                <!-- CVE-2026-39883 -->
+                <exclusion>
+                    <groupId>io.opentelemetry</groupId>
+                    <artifactId>opentelemetry-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.opentelemetry.semconv</groupId>
+                    <artifactId>opentelemetry-semconv</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
