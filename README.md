@@ -1,2 +1,2 @@
 # chs-kafka-api-java
-This micro-service transforms a JSON received via an internal HTTP request, into a Kafka TOPIC. Any entrypoint is statically configured to be mapped onto its own KAFKA TOPIC. This micro-service can be easily extended to manage further entrypoints/KAFKA TOPICS. For context of this micro-service in streaming Streaming Platform HLD
+This microservice transforms a JSON received via an internal HTTP request, into a Kafka message. Any entrypoint is statically configured to be mapped onto its own Kafka topic. It can be easily extended to manage further entrypoints/Kafka topics. Context of this microservice in [Streaming Platform HLD]( https://companieshouse.atlassian.net/wiki/spaces/Arch/pages/198934840/Streaming+Platform)
