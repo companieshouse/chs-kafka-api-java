@@ -1,8 +1,8 @@
 package uk.gov.companieshouse.chskafka.service.strategy;
 
 import uk.gov.companieshouse.api.chskafka.ProcessedFiling;
-import uk.gov.companieshouse.api.chskafka.ProcessedFilingRejection;
 import uk.gov.companieshouse.chskafka.exceptions.BadRequestRuntimeException;
+import uk.gov.companieshouse.chskafka.kafka.filingprocessed.FilingProcessedProducer;
 import uk.gov.companieshouse.chskafka.service.KafkaEventStrategy;
 import uk.gov.companieshouse.filing.processed.FilingProcessed;
 import uk.gov.companieshouse.filing.processed.PresenterRecord;
@@ -14,34 +14,41 @@ import uk.gov.companieshouse.logging.util.DataMap;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
 
 public class FilingProcessStrategy implements KafkaEventStrategy<ProcessedFiling, FilingProcessed> {
 
+    private final FilingProcessedProducer filingProcessedProducer;
+
+    public FilingProcessStrategy(FilingProcessedProducer filingProcessedProducer) {
+        this.filingProcessedProducer = filingProcessedProducer;
+    }
+
     @Override
     public FilingProcessed map(ProcessedFiling request) {
 
         FilingProcessed filingProcessed = new FilingProcessed();
 
-// Top-level fields
+        // Top-level fields
         filingProcessed.setApplicationId(request.getApplicationId());
         filingProcessed.setAttempt(1);
         filingProcessed.setChannelId(request.getChannelId());
 
-// Presenter
+        // Presenter
         PresenterRecord presenter = new PresenterRecord();
         presenter.setLanguage(request.getPresenter().getLanguage());
         presenter.setUserId(request.getPresenter().getUserId());
         filingProcessed.setPresenter(presenter);
 
-// Submission
+        // Submission
         SubmissionRecord submission = new SubmissionRecord();
         submission.setTransactionId(request.getTransactionId());
         filingProcessed.setSubmission(submission);
 
-// Response
+        // Response
         ResponseRecord response = new ResponseRecord();
         response.setCompanyName(request.getCompanyName());
         response.setCompanyNumber(request.getCompanyNumber());
@@ -50,13 +57,16 @@ public class FilingProcessStrategy implements KafkaEventStrategy<ProcessedFiling
         response.setStatus(request.getStatus());
         response.setSubmissionId(request.getSubmissionId());
 
-// Reject (optional)
+        // If reject reasons are supplied then populate them, else make the reject fields with empty Lists
+        RejectRecord rejectRecord = new RejectRecord();
         if (request.getRejection() != null) {
-            RejectRecord reject = new RejectRecord();
-            reject.setReasonsEnglish(request.getRejection().getEnglishReasons());
-            reject.setReasonsWelsh(request.getRejection().getWelshReasons());
-            response.setReject(reject);
+            rejectRecord.setReasonsEnglish(request.getRejection().getEnglishReasons());
+            rejectRecord.setReasonsWelsh(request.getRejection().getWelshReasons());
+        } else {
+            rejectRecord.setReasonsEnglish(Collections.emptyList());
+            rejectRecord.setReasonsWelsh(Collections.emptyList());
         }
+        response.setReject(rejectRecord);
 
         filingProcessed.setResponse(response);
         return filingProcessed;
@@ -77,8 +87,10 @@ public class FilingProcessStrategy implements KafkaEventStrategy<ProcessedFiling
             String msg = "Missing required fields: " + String.join(", ", missingFields);
             throw new BadRequestRuntimeException(xRequestId, msg, new Exception(msg), dataMap);
         }
-        if (request.getRejection() == null) {
-            ProcessedFilingRejection rejection = new ProcessedFilingRejection();
-        }
+    }
+
+    @Override
+    public void send(FilingProcessed avroRequest) {
+        filingProcessedProducer.publishMessage(avroRequest);
     }
 }
