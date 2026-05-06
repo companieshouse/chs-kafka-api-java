@@ -47,6 +47,22 @@ class FilingProcessedControllerIT extends AbstractControllerIT<FilingProcessed> 
     }
 
     @Test
+    void shouldPublishFilingProcessedAcceptedMinimalFieldsToKafkaSuccessfully() throws Exception {
+        // given
+        String requestBody = readResource("/filing-processed-accepted-min-fields-request.json");
+
+        FilingProcessed expected = readAndDeserialise("/filing-processed-accepted-min-fields-message.json");
+
+        // when
+        ResultActions response = mockMvcPost(requestBody, "/private/filing-processed");
+
+        // then
+        response.andExpect(status().isCreated());
+        FilingProcessed actual = consumeAndDeserialise();
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void shouldPublishFilingProcessedRejectedToKafkaSuccessfully() throws Exception {
         // given
         String requestBody = readResource("/filing-processed-rejected-request.json");
