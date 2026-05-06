@@ -11,12 +11,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import uk.gov.companieshouse.filing.processed.FilingProcessed;
 
 @SpringBootTest
-class FilingProcessedControllerIT extends AbstractControllerIT {
-
-    private static final String FILING_PROCESSED_TOPIC = "filing-processed";
+class FilingProcessedControllerIT extends AbstractControllerIT<FilingProcessed> {
 
     protected FilingProcessedControllerIT() {
-        super(FILING_PROCESSED_TOPIC);
+        super("filing-processed", FilingProcessed.class, FilingProcessed.getClassSchema());
     }
 
     @Test
@@ -24,15 +22,14 @@ class FilingProcessedControllerIT extends AbstractControllerIT {
         // given
         String requestBody = readResource("/filing-processed-accepted-request.json");
 
-        FilingProcessed expected = readAndDeserialise("/filing-processed-accepted-message.json", FilingProcessed.class,
-                FilingProcessed.getClassSchema());
+        FilingProcessed expected = readAndDeserialise("/filing-processed-accepted-message.json");
 
         // when
-        ResultActions result = mockMvcPost(requestBody, "/private/filing-processed");
+        ResultActions response = mockMvcPost(requestBody, "/private/filing-processed");
 
         // then
-        result.andExpect(status().isCreated());
-        FilingProcessed actual = consumeAndDeserialise(FILING_PROCESSED_TOPIC, FilingProcessed.class);
+        response.andExpect(status().isCreated());
+        FilingProcessed actual = consumeAndDeserialise();
         assertEquals(expected, actual);
     }
 
@@ -41,15 +38,14 @@ class FilingProcessedControllerIT extends AbstractControllerIT {
         // given
         String requestBody = readResource("/filing-processed-rejected-request.json");
 
-        FilingProcessed expected = readAndDeserialise("/filing-processed-rejected-message.json", FilingProcessed.class,
-                FilingProcessed.getClassSchema());
+        FilingProcessed expected = readAndDeserialise("/filing-processed-rejected-message.json");
 
         // when
-        ResultActions result = mockMvcPost(requestBody, "/private/filing-processed");
+        ResultActions response = mockMvcPost(requestBody, "/private/filing-processed");
 
         // then
-        result.andExpect(status().isCreated());
-        FilingProcessed actual = consumeAndDeserialise(FILING_PROCESSED_TOPIC, FilingProcessed.class);
+        response.andExpect(status().isCreated());
+        FilingProcessed actual = consumeAndDeserialise();
         assertEquals(expected, actual);
     }
 
@@ -59,11 +55,11 @@ class FilingProcessedControllerIT extends AbstractControllerIT {
         String requestBody = readResource("/filing-processed-request-invalid.json");
 
         // when
-        ResultActions result = mockMvcPost(requestBody, "/private/filing-processed");
+        ResultActions response = mockMvcPost(requestBody, "/private/filing-processed");
 
         // then
-        result.andExpect(status().isBadRequest());
-        assertZeroMessagesPublished(FILING_PROCESSED_TOPIC);
+        response.andExpect(status().isBadRequest());
+        assertZeroMessagesPublished();
     }
 
     @Test
@@ -72,14 +68,14 @@ class FilingProcessedControllerIT extends AbstractControllerIT {
         String requestBody = readResource("/filing-processed-request-invalid.json");
 
         // when
-        ResultActions result = mockMvc.perform(post("/private/filing-processed")
+        ResultActions response = mockMvc.perform(post("/private/filing-processed")
                 .header("X-Request-Id", "test-request-id")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody));
 
         // then
-        result.andExpect(status().isUnauthorized());
-        assertZeroMessagesPublished(FILING_PROCESSED_TOPIC);
+        response.andExpect(status().isUnauthorized());
+        assertZeroMessagesPublished();
     }
 
     @Test
@@ -88,15 +84,15 @@ class FilingProcessedControllerIT extends AbstractControllerIT {
         String requestBody = readResource("/filing-processed-request-invalid.json");
 
         // when
-        ResultActions result = mockMvc.perform(post("/private/filing-processed")
+        ResultActions response = mockMvc.perform(post("/private/filing-processed")
                 .header("ERIC-Identity", "123")
                 .header("X-Request-Id", "test-request-id")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody));
 
         // then
-        result.andExpect(status().isUnauthorized());
-        assertZeroMessagesPublished(FILING_PROCESSED_TOPIC);
+        response.andExpect(status().isUnauthorized());
+        assertZeroMessagesPublished();
     }
 
     @Test
@@ -105,7 +101,7 @@ class FilingProcessedControllerIT extends AbstractControllerIT {
         String requestBody = readResource("/filing-processed-request-invalid.json");
 
         // when
-        ResultActions result = mockMvc.perform(post("/private/filing-processed")
+        ResultActions response = mockMvc.perform(post("/private/filing-processed")
                 .header("ERIC-Identity", "123")
                 .header("ERIC-Identity-Type", "key")
                 .header("X-Request-Id", "test-request-id")
@@ -113,7 +109,7 @@ class FilingProcessedControllerIT extends AbstractControllerIT {
                 .content(requestBody));
 
         // then
-        result.andExpect(status().isForbidden());
-        assertZeroMessagesPublished(FILING_PROCESSED_TOPIC);
+        response.andExpect(status().isForbidden());
+        assertZeroMessagesPublished();
     }
 }

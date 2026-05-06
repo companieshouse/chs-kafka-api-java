@@ -33,7 +33,7 @@ import org.testcontainers.kafka.ConfluentKafkaContainer;
 @Testcontainers
 @AutoConfigureMockMvc
 @Import(TestKafkaConfig.class)
-abstract class AbstractControllerIT {
+abstract class AbstractControllerIT<T> {
 
     @Container
     protected static final ConfluentKafkaContainer kafka = new ConfluentKafkaContainer("confluentinc/cp-kafka:latest");
@@ -44,9 +44,13 @@ abstract class AbstractControllerIT {
     protected KafkaConsumer<String, byte[]> testConsumer;
 
     private final String topic;
+    private final Class<T> type;
+    private final Schema schema;
 
-    protected AbstractControllerIT(String topic) {
+    protected AbstractControllerIT(String topic, Class<T> type, Schema schema) {
         this.topic = topic;
+        this.type = type;
+        this.schema = schema;
     }
 
     @BeforeEach
@@ -68,7 +72,7 @@ abstract class AbstractControllerIT {
         }
     }
 
-    protected static <T> T readAndDeserialise(String filename, Class<T> type, Schema schema) throws IOException {
+    protected T readAndDeserialise(String filename) throws IOException {
         String expectedJson = readResource(filename);
         Decoder decoder = DecoderFactory.get().jsonDecoder(schema, expectedJson);
         DatumReader<T> reader = new ReflectDatumReader<>(type);
@@ -85,7 +89,7 @@ abstract class AbstractControllerIT {
                 .content(requestBody));
     }
 
-    protected <T> T consumeAndDeserialise(String topic, Class<T> type) throws IOException {
+    protected T consumeAndDeserialise() throws IOException {
         ConsumerRecords<?, ?> consumerRecords = KafkaTestUtils.getRecords(testConsumer, Duration.ofMillis(5000L), 1);
         byte[] actualBytes = (byte[]) consumerRecords.records(topic)
                 .iterator()
@@ -97,7 +101,7 @@ abstract class AbstractControllerIT {
         return reader.read(null, decoder);
     }
 
-    protected void assertZeroMessagesPublished(String topic) {
+    protected void assertZeroMessagesPublished() {
         ConsumerRecords<?, ?> consumerRecords = KafkaTestUtils.getRecords(testConsumer, Duration.ofMillis(5000L), 1);
         assertEquals(0, Iterables.size(consumerRecords.records(topic)));
     }
