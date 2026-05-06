@@ -10,16 +10,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import uk.gov.companieshouse.api.chskafka.ProcessedFiling;
-import uk.gov.companieshouse.chskafka.service.KafkaOrchestratorService;
-import uk.gov.companieshouse.chskafka.service.strategy.FilingProcessStrategy;
+import uk.gov.companieshouse.chskafka.service.FilingProcessedService;
 
 @ExtendWith(MockitoExtension.class)
 class FilingProcessedControllerTest {
 
     @Mock
-    private KafkaOrchestratorService kafkaOrchestratorService;
-    @Mock
-    private FilingProcessStrategy filingProcessStrategy;
+    private FilingProcessedService filingProcessedService;
     @InjectMocks
     private FilingProcessedController controller;
 
@@ -27,12 +24,11 @@ class FilingProcessedControllerTest {
     void shouldReturn201Created() {
         // given
 
-
         // when
-        ResponseEntity<Void> actual = controller.filingProcessedMessage(new ProcessedFiling(), "test-request-id");
+        ResponseEntity<Void> actual = controller.processRequest(new ProcessedFiling());
 
         // then
         assertEquals(201, actual.getStatusCode().value());
-        verify(kafkaOrchestratorService).processAndPublish(new ProcessedFiling(), filingProcessStrategy, "test-request-id");
+        verify(filingProcessedService).processAndPublish(new ProcessedFiling());
     }
 }

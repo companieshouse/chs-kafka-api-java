@@ -1,14 +1,21 @@
-package uk.gov.companieshouse.chskafka.util;
+package uk.gov.companieshouse.chskafka.mapper;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import jakarta.validation.constraints.NotNull;
+import java.util.Collections;
+import org.junit.jupiter.api.Test;
 import uk.gov.companieshouse.api.chskafka.ProcessedFiling;
 import uk.gov.companieshouse.api.chskafka.ProcessedFilingPresenter;
 import uk.gov.companieshouse.api.chskafka.ProcessedFilingRejection;
-import uk.gov.companieshouse.filing.processed.*;
+import uk.gov.companieshouse.filing.processed.FilingProcessed;
+import uk.gov.companieshouse.filing.processed.PresenterRecord;
+import uk.gov.companieshouse.filing.processed.RejectRecord;
+import uk.gov.companieshouse.filing.processed.ResponseRecord;
+import uk.gov.companieshouse.filing.processed.SubmissionRecord;
 
-import java.util.Collections;
-
-public class TestUtils {
+class FilingProcessedMapperTest {
 
     private static final String APPLICATION_ID = "123";
     private static final String CHANNEL_ID = "321";
@@ -27,8 +34,46 @@ public class TestUtils {
     private static final String REJECT_REASONS_ENGLISH = "reasons";
     private static final String REJECT_REASONS_WELSH = "rhesymau";
 
+    private final FilingProcessedMapper filingProcessedMapper = new FilingProcessedMapper();
+
+    @Test
+    void testSuccessfullyMapFilingProcessed() {
+        // given
+        ProcessedFiling processedFiling = getProcessedFiling();
+
+        // when
+        FilingProcessed result = filingProcessedMapper.map(processedFiling);
+
+        // then
+        assertNotNull(result.getResponse().getDateOfCreation());
+
+        // remove dynamic creation date to do direct comparison between actual and result
+        ResponseRecord responseRecordWithoutDate = result.getResponse();
+        responseRecordWithoutDate.setDateOfCreation(null);
+        result.setResponse(responseRecordWithoutDate);
+        assertEquals(getFilingProcessed(), result);
+    }
+
+    @Test
+    void testSuccessfullyMapFilingProcessedWithRejectReasons() {
+        // given
+        ProcessedFiling processedFiling = getProcessedFilingWithReject();
+
+        // when
+        FilingProcessed result = filingProcessedMapper.map(processedFiling);
+
+        // then
+        assertNotNull(result.getResponse().getDateOfCreation());
+
+        // remove dynamic creation date to do direct comparison between actual and result
+        ResponseRecord responseRecordWithoutDate = result.getResponse();
+        responseRecordWithoutDate.setDateOfCreation(null);
+        result.setResponse(responseRecordWithoutDate);
+        assertEquals(getFilingProcessedWithReject(), result);
+    }
+
     @NotNull
-    public static FilingProcessed getFilingProcessed() {
+    private static FilingProcessed getFilingProcessed() {
         FilingProcessed filingProcessed = new FilingProcessed();
         filingProcessed.setApplicationId(APPLICATION_ID);
         filingProcessed.setAttempt(1);
@@ -58,8 +103,7 @@ public class TestUtils {
         return filingProcessed;
     }
 
-    @NotNull
-    public static FilingProcessed getFilingProcessedWithReject() {
+    private static FilingProcessed getFilingProcessedWithReject() {
         FilingProcessed filingProcessed = getFilingProcessed();
         ResponseRecord responseRecord = filingProcessed.getResponse();
         RejectRecord rejectRecord = new RejectRecord();
@@ -71,8 +115,7 @@ public class TestUtils {
         return filingProcessed;
     }
 
-    @NotNull
-    public static ProcessedFiling getProcessedFiling() {
+    private static ProcessedFiling getProcessedFiling() {
         ProcessedFiling processedFiling = new ProcessedFiling();
         processedFiling.setApplicationId(APPLICATION_ID);
         processedFiling.setChannelId(CHANNEL_ID);
@@ -92,8 +135,7 @@ public class TestUtils {
         return processedFiling;
     }
 
-    @NotNull
-    public static ProcessedFiling getProcessedFilingWithReject() {
+    private static ProcessedFiling getProcessedFilingWithReject() {
         ProcessedFiling processedFiling = getProcessedFiling();
         ProcessedFilingRejection rejectRecord = new ProcessedFilingRejection();
         rejectRecord.setEnglishReasons(Collections.singletonList(REJECT_REASONS_ENGLISH));

@@ -1,5 +1,12 @@
-package uk.gov.companieshouse.chskafka.kafka.filingprocessed;
+package uk.gov.companieshouse.chskafka.kafka;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,47 +17,34 @@ import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import uk.gov.companieshouse.chskafka.exceptions.BadGatewayException;
-import uk.gov.companieshouse.chskafka.logging.DataMapHolder;
-import uk.gov.companieshouse.chskafka.util.TestUtils;
 import uk.gov.companieshouse.filing.processed.FilingProcessed;
 
-import java.util.concurrent.CompletableFuture;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 @ExtendWith(MockitoExtension.class)
-public class FilingProcessedKafkaProducerTest {
+class KafkaProducerTest {
 
     private static final String FILING_PROCESSED_TOPIC = "filing-processed";
-    private static final String CONTEXT_ID = "context_id";
 
     @Mock
     private KafkaTemplate<String, FilingProcessed> kafkaTemplate;
+    private KafkaProducer<FilingProcessed> kafkaProducer;
 
+    @Mock
+    private FilingProcessed filingProcessed;
     @Mock
     private SendResult<String, FilingProcessed> sendResult;
 
-    private FilingProcessedKafkaProducer filingProcessedKafkaProducer;
-
     @BeforeEach
     void setup() {
-        filingProcessedKafkaProducer = new FilingProcessedKafkaProducer(kafkaTemplate, FILING_PROCESSED_TOPIC);
+        kafkaProducer = new KafkaProducer<>(FILING_PROCESSED_TOPIC, kafkaTemplate);
     }
 
     @Test
     void shouldPublishFilingProcessedMessage() {
         // given
-        FilingProcessed filingProcessed = TestUtils.getFilingProcessed();
-
-        DataMapHolder.get().requestId(CONTEXT_ID);
         when(kafkaTemplate.send(anyString(), any())).thenReturn(CompletableFuture.completedFuture(sendResult));
 
         // when
-        filingProcessedKafkaProducer.publishMessage(filingProcessed);
+        kafkaProducer.publishMessage(filingProcessed);
 
         // then
         verify(kafkaTemplate).send(FILING_PROCESSED_TOPIC, filingProcessed);
@@ -59,13 +53,10 @@ public class FilingProcessedKafkaProducerTest {
     @Test
     void shouldThrowBadGatewayExceptionWhenKafkaExceptionCaught() {
         // given
-        FilingProcessed filingProcessed = TestUtils.getFilingProcessed();
-
-        DataMapHolder.get().requestId(CONTEXT_ID);
         when(kafkaTemplate.send(anyString(), any())).thenThrow(KafkaException.class);
 
         // when
-        Executable executable = () -> filingProcessedKafkaProducer.publishMessage(filingProcessed);
+        Executable executable = () -> kafkaProducer.publishMessage(filingProcessed);
 
         // then
         assertThrows(BadGatewayException.class, executable);
@@ -75,13 +66,10 @@ public class FilingProcessedKafkaProducerTest {
     @Test
     void shouldThrowBadGatewayExceptionWhenCompletableFutureFails() {
         // given
-        FilingProcessed filingProcessed = TestUtils.getFilingProcessed();
-
-        DataMapHolder.get().requestId(CONTEXT_ID);
         when(kafkaTemplate.send(anyString(), any())).thenReturn(CompletableFuture.failedFuture(new RuntimeException()));
 
         // when
-        Executable executable = () -> filingProcessedKafkaProducer.publishMessage(filingProcessed);
+        Executable executable = () -> kafkaProducer.publishMessage(filingProcessed);
 
         // then
         assertThrows(BadGatewayException.class, executable);

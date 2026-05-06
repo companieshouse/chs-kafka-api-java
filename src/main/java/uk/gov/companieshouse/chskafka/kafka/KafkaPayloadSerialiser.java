@@ -1,6 +1,6 @@
-package uk.gov.companieshouse.chskafka.kafka.filingprocessed;
+package uk.gov.companieshouse.chskafka.kafka;
 
-import static uk.gov.companieshouse.chskafka.Application.NAMESPACE;
+import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -10,12 +10,8 @@ import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.reflect.ReflectDatumWriter;
 import org.apache.kafka.common.serialization.Serializer;
 import uk.gov.companieshouse.chskafka.exceptions.BadGatewayException;
-import uk.gov.companieshouse.logging.Logger;
-import uk.gov.companieshouse.logging.LoggerFactory;
 
 public class KafkaPayloadSerialiser<T> implements Serializer<T> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
 
     private final Class<T> type;
 
