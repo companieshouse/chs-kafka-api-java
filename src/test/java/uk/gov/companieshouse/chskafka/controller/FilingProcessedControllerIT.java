@@ -1,13 +1,18 @@
 package uk.gov.companieshouse.chskafka.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDateTime;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
+import uk.gov.companieshouse.chskafka.mapper.LocalDateTimeSupplier;
 import uk.gov.companieshouse.filing.processed.FilingProcessed;
 
 @SpringBootTest
@@ -15,6 +20,14 @@ class FilingProcessedControllerIT extends AbstractControllerIT<FilingProcessed> 
 
     protected FilingProcessedControllerIT() {
         super("filing-processed", FilingProcessed.class, FilingProcessed.getClassSchema());
+    }
+
+    @MockitoBean
+    private LocalDateTimeSupplier localDateTimeSupplier;
+
+    @BeforeEach
+    void setUp() {
+        when(localDateTimeSupplier.get()).thenReturn(LocalDateTime.parse("2026-04-16T11:20:26"));
     }
 
     @Test

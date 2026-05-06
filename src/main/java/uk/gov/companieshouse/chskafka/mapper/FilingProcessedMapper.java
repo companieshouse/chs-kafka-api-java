@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.chskafka.mapper;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.chskafka.ProcessedFiling;
@@ -12,6 +13,14 @@ import uk.gov.companieshouse.filing.processed.SubmissionRecord;
 
 @Component
 public class FilingProcessedMapper implements RequestMapper<ProcessedFiling, FilingProcessed> {
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+
+    private final LocalDateTimeSupplier localDateTimeSupplier;
+
+    public FilingProcessedMapper(LocalDateTimeSupplier localDateTimeSupplier) {
+        this.localDateTimeSupplier = localDateTimeSupplier;
+    }
 
     @Override
     public FilingProcessed map(ProcessedFiling request) {
@@ -38,7 +47,7 @@ public class FilingProcessedMapper implements RequestMapper<ProcessedFiling, Fil
         ResponseRecord response = new ResponseRecord();
         response.setCompanyName(request.getCompanyName());
         response.setCompanyNumber(request.getCompanyNumber());
-        response.setDateOfCreation("");//LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
+        response.setDateOfCreation(DATE_TIME_FORMATTER.format(localDateTimeSupplier.get()));
         response.setProcessedAt(request.getProcessedAt());
         response.setStatus(request.getStatus());
         response.setSubmissionId(request.getSubmissionId());

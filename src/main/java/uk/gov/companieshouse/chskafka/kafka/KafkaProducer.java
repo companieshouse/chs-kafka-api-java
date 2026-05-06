@@ -20,6 +20,8 @@ public class KafkaProducer<T> {
 
     public void publishMessage(T message) {
         try {
+            DataMapHolder.get().topic(topic);
+            LOGGER.info("Publishing message to Kafka", DataMapHolder.getLogMap());
             kafkaTemplate.send(topic, message).join();
         } catch (CompletionException ex) {
             final String msg = "Completion error during Kafka send Future";

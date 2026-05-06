@@ -54,7 +54,7 @@ abstract class AbstractControllerIT<T> {
     }
 
     @BeforeEach
-    void setup() {
+    protected void setup() {
         testConsumer.subscribe(List.of(topic));
         testConsumer.poll(Duration.ofMillis(1000));
     }

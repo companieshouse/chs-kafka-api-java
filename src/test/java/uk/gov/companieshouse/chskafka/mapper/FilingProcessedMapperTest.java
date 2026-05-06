@@ -1,11 +1,17 @@
 package uk.gov.companieshouse.chskafka.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.api.chskafka.ProcessedFiling;
 import uk.gov.companieshouse.api.chskafka.ProcessedFilingPresenter;
 import uk.gov.companieshouse.api.chskafka.ProcessedFilingRejection;
@@ -15,6 +21,7 @@ import uk.gov.companieshouse.filing.processed.RejectRecord;
 import uk.gov.companieshouse.filing.processed.ResponseRecord;
 import uk.gov.companieshouse.filing.processed.SubmissionRecord;
 
+@ExtendWith(MockitoExtension.class)
 class FilingProcessedMapperTest {
 
     private static final String APPLICATION_ID = "123";
@@ -27,31 +34,32 @@ class FilingProcessedMapperTest {
 
     private static final String RESPONSE_COMPANY_NAME = "test-company";
     private static final String RESPONSE_COMPANY_NUMBER = "00002121";
-    private static final String RESPONSE_PROCESSED_AT = "2026-05-02'T'13:30:00";
+    private static final String RESPONSE_PROCESSED_AT = "2026-04-16T10:19:56Z";
     private static final String RESPONSE_STATUS = "accepted";
     private static final String RESPONSE_SUBMISSION_ID = "2020-2021";
 
     private static final String REJECT_REASONS_ENGLISH = "reasons";
     private static final String REJECT_REASONS_WELSH = "rhesymau";
+    private static final String LOCAL_DATE_TIME = "2026-04-16T11:19:56";
 
-    private final FilingProcessedMapper filingProcessedMapper = new FilingProcessedMapper();
+    @Mock
+    private LocalDateTimeSupplier localDateTimeSupplier;
+    @InjectMocks
+    private FilingProcessedMapper filingProcessedMapper;
 
     @Test
     void testSuccessfullyMapFilingProcessed() {
         // given
         ProcessedFiling processedFiling = getProcessedFiling();
 
+        when(localDateTimeSupplier.get()).thenReturn(LocalDateTime.parse(LOCAL_DATE_TIME));
+
         // when
         FilingProcessed result = filingProcessedMapper.map(processedFiling);
 
         // then
-        assertNotNull(result.getResponse().getDateOfCreation());
-
-        // remove dynamic creation date to do direct comparison between actual and result
-        ResponseRecord responseRecordWithoutDate = result.getResponse();
-        responseRecordWithoutDate.setDateOfCreation(null);
-        result.setResponse(responseRecordWithoutDate);
         assertEquals(getFilingProcessed(), result);
+        verify(localDateTimeSupplier).get();
     }
 
     @Test
@@ -59,17 +67,14 @@ class FilingProcessedMapperTest {
         // given
         ProcessedFiling processedFiling = getProcessedFilingWithReject();
 
+        when(localDateTimeSupplier.get()).thenReturn(LocalDateTime.parse(LOCAL_DATE_TIME));
+
         // when
         FilingProcessed result = filingProcessedMapper.map(processedFiling);
 
         // then
-        assertNotNull(result.getResponse().getDateOfCreation());
-
-        // remove dynamic creation date to do direct comparison between actual and result
-        ResponseRecord responseRecordWithoutDate = result.getResponse();
-        responseRecordWithoutDate.setDateOfCreation(null);
-        result.setResponse(responseRecordWithoutDate);
         assertEquals(getFilingProcessedWithReject(), result);
+        verify(localDateTimeSupplier).get();
     }
 
     @NotNull
@@ -98,6 +103,7 @@ class FilingProcessedMapperTest {
         responseRecord.setProcessedAt(RESPONSE_PROCESSED_AT);
         responseRecord.setStatus(RESPONSE_STATUS);
         responseRecord.setSubmissionId(RESPONSE_SUBMISSION_ID);
+        responseRecord.setDateOfCreation(LOCAL_DATE_TIME);
         filingProcessed.setResponse(responseRecord);
 
         return filingProcessed;
