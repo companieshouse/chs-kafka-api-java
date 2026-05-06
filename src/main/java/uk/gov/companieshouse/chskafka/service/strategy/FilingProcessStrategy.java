@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.chskafka.service.strategy;
 
+import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.chskafka.ProcessedFiling;
 import uk.gov.companieshouse.chskafka.exceptions.BadRequestRuntimeException;
 import uk.gov.companieshouse.chskafka.kafka.filingprocessed.FilingProcessedProducer;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
 
+@Component
 public class FilingProcessStrategy implements KafkaEventStrategy<ProcessedFiling, FilingProcessed> {
 
     private final FilingProcessedProducer filingProcessedProducer;
@@ -52,7 +54,7 @@ public class FilingProcessStrategy implements KafkaEventStrategy<ProcessedFiling
         ResponseRecord response = new ResponseRecord();
         response.setCompanyName(request.getCompanyName());
         response.setCompanyNumber(request.getCompanyNumber());
-        response.setDateOfCreation(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
+        response.setDateOfCreation("");//LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")));
         response.setProcessedAt(request.getProcessedAt());
         response.setStatus(request.getStatus());
         response.setSubmissionId(request.getSubmissionId());

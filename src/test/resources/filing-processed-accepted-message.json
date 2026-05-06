@@ -1,0 +1,38 @@
+{
+  "application_id": "6309912450514.apps.ch.gov.uk",
+  "attempt": 1,
+  "channel_id": {
+    "string": "chs"
+  },
+  "presenter": {
+    "language": "en",
+    "user_id": "WoJPSpnEN_p8g1ENkLoA1VnFPQM"
+  },
+  "submission": {
+    "transaction_id": "021787-298317-763347"
+  },
+  "response": {
+    "company_name": {
+      "string": "PSC VERIFICATION SECURITY TESTING LTD"
+    },
+    "company_number": {
+      "string": "15220419"
+    },
+    "date_of_creation": {
+      "string": ""
+    },
+    "processed_at": "2026-04-16T10:19:56Z",
+    "status": "accepted",
+    "submission_id": "021787-298317-763347-1",
+    "reject": {
+      "uk.gov.companieshouse.filing.processed.RejectRecord": {
+        "reasons_english": {
+          "array": []
+        },
+        "reasons_welsh": {
+          "array": []
+        }
+      }
+    }
+  }
+}

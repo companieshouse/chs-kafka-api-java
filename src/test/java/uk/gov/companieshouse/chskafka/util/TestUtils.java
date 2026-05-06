@@ -1,11 +1,11 @@
 package uk.gov.companieshouse.chskafka.util;
 
+import jakarta.validation.constraints.NotNull;
 import uk.gov.companieshouse.api.chskafka.ProcessedFiling;
 import uk.gov.companieshouse.api.chskafka.ProcessedFilingPresenter;
 import uk.gov.companieshouse.api.chskafka.ProcessedFilingRejection;
 import uk.gov.companieshouse.filing.processed.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.Collections;
 
 public class TestUtils {

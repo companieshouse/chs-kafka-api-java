@@ -29,7 +29,6 @@
         <maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <jib-maven-plugin.version>3.5.1</jib-maven-plugin.version>
-        <wiremock-standalone.version>3.13.2</wiremock-standalone.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -128,9 +127,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.wiremock</groupId>
-            <artifactId>wiremock-standalone</artifactId>
-            <version>${wiremock-standalone.version}</version>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -22,7 +22,7 @@ public class FilingProcessedKafkaProducer implements FilingProcessedProducer{
     private final String filingProcessedTopic;
 
     public FilingProcessedKafkaProducer(KafkaTemplate<String, FilingProcessed> kafkaTemplate,
-                                        @Value("${kafka.filing.processed.topic}") String filingProcessedTopic) {
+                                        @Value("${kafka.topic.filing-processed}") String filingProcessedTopic) {
         this.kafkaTemplate = kafkaTemplate;
         this.filingProcessedTopic = filingProcessedTopic;
     }
