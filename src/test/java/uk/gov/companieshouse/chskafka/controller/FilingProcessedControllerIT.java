@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -30,44 +32,17 @@ class FilingProcessedControllerIT extends AbstractControllerIT<FilingProcessed> 
         when(localDateTimeSupplier.get()).thenReturn(LocalDateTime.parse("2026-04-16T11:20:26"));
     }
 
-    @Test
-    void shouldPublishFilingProcessedAcceptedToKafkaSuccessfully() throws Exception {
+    @ParameterizedTest
+    @CsvSource({
+            "/filing-processed-accepted-request.json, /filing-processed-accepted-message.json",
+            "/filing-processed-accepted-min-fields-request.json, /filing-processed-accepted-min-fields-message.json",
+            "/filing-processed-rejected-request.json, /filing-processed-rejected-message.json"
+    })
+    void shouldPublishFilingProcessedToKafkaSuccessfully(String request, String expectedMessage) throws Exception {
         // given
-        String requestBody = readResource("/filing-processed-accepted-request.json");
+        String requestBody = readResource(request);
 
-        FilingProcessed expected = readAndDeserialise("/filing-processed-accepted-message.json");
-
-        // when
-        ResultActions response = mockMvcPost(requestBody, "/private/filing-processed");
-
-        // then
-        response.andExpect(status().isCreated());
-        FilingProcessed actual = consumeAndDeserialise();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void shouldPublishFilingProcessedAcceptedMinimalFieldsToKafkaSuccessfully() throws Exception {
-        // given
-        String requestBody = readResource("/filing-processed-accepted-min-fields-request.json");
-
-        FilingProcessed expected = readAndDeserialise("/filing-processed-accepted-min-fields-message.json");
-
-        // when
-        ResultActions response = mockMvcPost(requestBody, "/private/filing-processed");
-
-        // then
-        response.andExpect(status().isCreated());
-        FilingProcessed actual = consumeAndDeserialise();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    void shouldPublishFilingProcessedRejectedToKafkaSuccessfully() throws Exception {
-        // given
-        String requestBody = readResource("/filing-processed-rejected-request.json");
-
-        FilingProcessed expected = readAndDeserialise("/filing-processed-rejected-message.json");
+        FilingProcessed expected = readAndDeserialise(expectedMessage);
 
         // when
         ResultActions response = mockMvcPost(requestBody, "/private/filing-processed");
