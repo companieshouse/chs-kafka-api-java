@@ -23,7 +23,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, @Nonnull HttpServletResponse response, @Nullable Object handler) {
-
         String ericIdentity = request.getHeader(ERIC_IDENTITY);
         String ericIdentityType = request.getHeader(ERIC_IDENTITY_TYPE);
 
@@ -39,7 +38,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        if (!isKeyAuthorised(request)) {
+        if (!hasInternalPrivileges(request)) {
             LOGGER.error("Key is not authorised", DataMapHolder.getLogMap());
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return false;
@@ -47,7 +46,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private boolean isKeyAuthorised(HttpServletRequest request) {
+    private boolean hasInternalPrivileges(HttpServletRequest request) {
         String[] privileges = getApiKeyPrivileges(request);
 
         return ArrayUtils.contains(privileges, INTERNAL_APP_PRIVILEGE);
