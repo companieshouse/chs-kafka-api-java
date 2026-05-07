@@ -24,11 +24,11 @@ public class KafkaProducer<T> {
             LOGGER.info("Publishing message to Kafka", DataMapHolder.getLogMap());
             kafkaTemplate.send(topic, message).join();
         } catch (CompletionException ex) {
-            final String msg = "Completion error during Kafka send Future";
+            final String msg = "Completion error during Kafka send future";
             LOGGER.error(msg, ex, DataMapHolder.getLogMap());
             throw new BadGatewayException(msg, ex);
         } catch (KafkaException ex) {
-            final String msg = "Error publishing to filing-processed topic";
+            final String msg = "Error publishing to Kafka";
             LOGGER.error(msg, ex, DataMapHolder.getLogMap());
             throw new BadGatewayException(msg, ex);
         }
