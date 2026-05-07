@@ -15,11 +15,11 @@ import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
 import uk.gov.companieshouse.filing.processed.FilingProcessed;
 
 @RestController
-public class FilingProcessedController implements Controller<ProcessedFiling> {
+class FilingProcessedController implements Controller<ProcessedFiling> {
 
     private final Service<ProcessedFiling, FilingProcessed> service;
 
-    public FilingProcessedController(Service<ProcessedFiling, FilingProcessed> service) {
+    FilingProcessedController(Service<ProcessedFiling, FilingProcessed> service) {
         this.service = service;
     }
 

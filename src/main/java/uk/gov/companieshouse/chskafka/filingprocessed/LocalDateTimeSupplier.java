@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LocalDateTimeSupplier implements Supplier<LocalDateTime> {
+class LocalDateTimeSupplier implements Supplier<LocalDateTime> {
 
     @Override
     public LocalDateTime get() {

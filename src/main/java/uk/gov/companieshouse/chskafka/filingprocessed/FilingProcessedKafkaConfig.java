@@ -15,7 +15,7 @@ import uk.gov.companieshouse.chskafka.common.kafka.KafkaProducer;
 import uk.gov.companieshouse.filing.processed.FilingProcessed;
 
 @Configuration
-public class FilingProcessedKafkaConfig implements KafkaConfig<FilingProcessed> {
+class FilingProcessedKafkaConfig implements KafkaConfig<FilingProcessed> {
 
     @Bean
     @Override

@@ -13,13 +13,13 @@ import uk.gov.companieshouse.filing.processed.ResponseRecord;
 import uk.gov.companieshouse.filing.processed.SubmissionRecord;
 
 @Component
-public class FilingProcessedMapper implements Mapper<ProcessedFiling, FilingProcessed> {
+class FilingProcessedMapper implements Mapper<ProcessedFiling, FilingProcessed> {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     private final LocalDateTimeSupplier localDateTimeSupplier;
 
-    public FilingProcessedMapper(LocalDateTimeSupplier localDateTimeSupplier) {
+    FilingProcessedMapper(LocalDateTimeSupplier localDateTimeSupplier) {
         this.localDateTimeSupplier = localDateTimeSupplier;
     }
 

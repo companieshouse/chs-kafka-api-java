@@ -8,12 +8,12 @@ import uk.gov.companieshouse.chskafka.common.kafka.KafkaProducer;
 import uk.gov.companieshouse.filing.processed.FilingProcessed;
 
 @Component
-public class FilingProcessedService implements Service<ProcessedFiling, FilingProcessed> {
+class FilingProcessedService implements Service<ProcessedFiling, FilingProcessed> {
 
     private final Mapper<ProcessedFiling, FilingProcessed> filingProcessedMapper;
     private final KafkaProducer<FilingProcessed> kafkaProducer;
 
-    public FilingProcessedService(Mapper<ProcessedFiling, FilingProcessed> filingProcessedMapper,
+    FilingProcessedService(Mapper<ProcessedFiling, FilingProcessed> filingProcessedMapper,
             KafkaProducer<FilingProcessed> kafkaProducer) {
         this.filingProcessedMapper = filingProcessedMapper;
         this.kafkaProducer = kafkaProducer;
