@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import uk.gov.companieshouse.chskafka.exceptions.BadGatewayException;
+import uk.gov.companieshouse.chskafka.exception.BadGatewayException;
 import uk.gov.companieshouse.filing.processed.FilingProcessed;
 
 @ExtendWith(MockitoExtension.class)

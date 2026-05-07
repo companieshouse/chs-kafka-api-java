@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.chskafka.exceptions;
+package uk.gov.companieshouse.chskafka.exception;
 
 public class BadGatewayException extends RuntimeException {
 

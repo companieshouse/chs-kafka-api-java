@@ -9,7 +9,7 @@ import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.reflect.ReflectDatumWriter;
 import org.apache.kafka.common.serialization.Serializer;
-import uk.gov.companieshouse.chskafka.exceptions.BadGatewayException;
+import uk.gov.companieshouse.chskafka.exception.InvalidPayloadException;
 
 public class KafkaPayloadSerialiser<T> implements Serializer<T> {
 
@@ -28,7 +28,7 @@ public class KafkaPayloadSerialiser<T> implements Serializer<T> {
             writer.write(data, encoder);
         } catch (IOException ex) {
             LOGGER.error("Error serialising message payload", ex);
-            throw new BadGatewayException("Error serialising message payload", ex);
+            throw new InvalidPayloadException("Error serialising message payload", ex);
         }
         return outputStream.toByteArray();
     }

@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
-import uk.gov.companieshouse.chskafka.exceptions.BadGatewayException;
+import uk.gov.companieshouse.chskafka.exception.BadGatewayException;
 import uk.gov.companieshouse.chskafka.mapper.LocalDateTimeSupplier;
 import uk.gov.companieshouse.filing.processed.FilingProcessed;
 

@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.chskafka.exceptions;
+package uk.gov.companieshouse.chskafka.exception;
 
 import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 
@@ -44,8 +44,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_GATEWAY, ex.getMessage());
     }
 
-    @ExceptionHandler(value = {Exception.class})
-    public ProblemDetail handleCatchAllUnknown(Exception ex) {
+    @ExceptionHandler(value = {Exception.class, InvalidPayloadException.class})
+    public ProblemDetail handleInternalServerError(Exception ex) {
         LOGGER.error(ex.getClass().getName(), ex, DataMapHolder.getLogMap());
         return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.gov.companieshouse.chskafka.exceptions.BadGatewayException;
+import uk.gov.companieshouse.chskafka.exception.InvalidPayloadException;
 import uk.gov.companieshouse.filing.processed.FilingProcessed;
 import uk.gov.companieshouse.filing.processed.PresenterRecord;
 import uk.gov.companieshouse.filing.processed.ResponseRecord;
@@ -61,7 +61,7 @@ class KafkaPayloadSerialiserTest {
         Executable actual = () -> serialiser.serialize("topic", new FilingProcessed());
 
         // then
-        BadGatewayException exception = assertThrows(BadGatewayException.class, actual);
+        InvalidPayloadException exception = assertThrows(InvalidPayloadException.class, actual);
         assertInstanceOf(IOException.class, exception.getCause());
     }
 }

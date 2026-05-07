@@ -5,7 +5,7 @@ import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 import java.util.concurrent.CompletionException;
 import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.core.KafkaTemplate;
-import uk.gov.companieshouse.chskafka.exceptions.BadGatewayException;
+import uk.gov.companieshouse.chskafka.exception.BadGatewayException;
 import uk.gov.companieshouse.chskafka.logging.DataMapHolder;
 
 public class KafkaProducer<T> {
