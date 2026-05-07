@@ -3,6 +3,7 @@ package uk.gov.companieshouse.chskafka.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDateTime;
@@ -11,9 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
+import uk.gov.companieshouse.chskafka.exceptions.BadGatewayException;
 import uk.gov.companieshouse.chskafka.mapper.LocalDateTimeSupplier;
 import uk.gov.companieshouse.filing.processed.FilingProcessed;
 
@@ -62,7 +65,12 @@ class FilingProcessedControllerIT extends AbstractControllerIT<FilingProcessed> 
         ResultActions response = mockMvcPost(requestBody, "/private/filing-processed");
 
         // then
-        response.andExpect(status().isBadRequest());
+        response.andExpectAll(status().isBadRequest(),
+                jsonPath("$.title").value(HttpStatus.BAD_REQUEST.getReasonPhrase()),
+                jsonPath("$.status").value(HttpStatus.BAD_REQUEST.value()),
+                jsonPath("$.detail").value("Invalid request content."),
+                jsonPath("$.instance").value("/private/filing-processed"),
+                jsonPath("$.transactionId").value("[null] must not be null"));
         assertZeroMessagesPublished();
     }
 
@@ -114,6 +122,42 @@ class FilingProcessedControllerIT extends AbstractControllerIT<FilingProcessed> 
 
         // then
         response.andExpect(status().isForbidden());
+        assertZeroMessagesPublished();
+    }
+
+    @Test
+    void shouldReturn500WhenUnknownExceptionThrown() throws Exception {
+        // given
+        String requestBody = readResource("/filing-processed-accepted-request.json");
+
+        when(localDateTimeSupplier.get()).thenThrow(NullPointerException.class);
+
+        // when
+        ResultActions response = mockMvcPost(requestBody, "/private/filing-processed");
+
+        // then
+        response.andExpectAll(status().isInternalServerError(),
+                jsonPath("$.title").value(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()),
+                jsonPath("$.status").value(HttpStatus.INTERNAL_SERVER_ERROR.value()),
+                jsonPath("$.instance").value("/private/filing-processed"));
+        assertZeroMessagesPublished();
+    }
+
+    @Test
+    void shouldReturn502WhenBadGatewayExceptionThrown() throws Exception {
+        // given
+        String requestBody = readResource("/filing-processed-accepted-request.json");
+
+        when(localDateTimeSupplier.get()).thenThrow(BadGatewayException.class);
+
+        // when
+        ResultActions response = mockMvcPost(requestBody, "/private/filing-processed");
+
+        // then
+        response.andExpectAll(status().isBadGateway(),
+                jsonPath("$.title").value(HttpStatus.BAD_GATEWAY.getReasonPhrase()),
+                jsonPath("$.status").value(HttpStatus.BAD_GATEWAY.value()),
+                jsonPath("$.instance").value("/private/filing-processed"));
         assertZeroMessagesPublished();
     }
 }

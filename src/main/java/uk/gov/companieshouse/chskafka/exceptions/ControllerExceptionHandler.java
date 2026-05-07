@@ -2,47 +2,51 @@ package uk.gov.companieshouse.chskafka.exceptions;
 
 import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import uk.gov.companieshouse.chskafka.logging.DataMapHolder;
 
 @ControllerAdvice
-public class ControllerExceptionHandler {
+public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = {MethodArgumentNotValidException.class,})
-    public ResponseEntity<Void> handleBadRequestExceptions(Exception ex) {
+    // Custom bad request logging and response body
+    @Override
+    protected @Nullable ResponseEntity<@NonNull Object> handleMethodArgumentNotValid(@NonNull MethodArgumentNotValidException ex,
+            @NonNull HttpHeaders headers, @NonNull HttpStatusCode status, @NonNull WebRequest request) {
         LOGGER.error("Invalid request body", ex, DataMapHolder.getLogMap());
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .build();
-    }
-
-    @ExceptionHandler(value = {Exception.class})
-    public ResponseEntity<Void> handleInternalServerError(Exception ex) {
-        LOGGER.error(ex.getClass().getName(), ex, DataMapHolder.getLogMap());
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .build();
+        ProblemDetail problemDetail = ex.getBody();
+        Map<String, Object> invalidProperties = ex.getBindingResult().getFieldErrors()
+                .stream()
+                .collect(Collectors.toMap(
+                        FieldError::getField,
+                        fieldError -> "[%s] %s".formatted(fieldError.getRejectedValue(), fieldError.getDefaultMessage()),
+                        "%s, %s"::formatted));
+        problemDetail.setProperties(invalidProperties);
+        return handleExceptionInternal(ex, problemDetail, headers, status, request);
     }
 
     @ExceptionHandler(value = {BadGatewayException.class})
-    public ResponseEntity<Void> handleBadGateway(Exception ex) {
+    public ProblemDetail handleBadGateway(BadGatewayException ex) {
         LOGGER.error("Error calling downstream service", ex, DataMapHolder.getLogMap());
-        return ResponseEntity
-                .status(HttpStatus.BAD_GATEWAY)
-                .build();
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_GATEWAY, ex.getMessage());
     }
 
-    @ExceptionHandler(value = {NoResourceFoundException.class, MethodArgumentTypeMismatchException.class})
-    public ResponseEntity<Void> handNoResourceFound(Exception ex) {
-        LOGGER.error("Endpoint not found", ex, DataMapHolder.getLogMap());
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .build();
+    @ExceptionHandler(value = {Exception.class})
+    public ProblemDetail handleCatchAllUnknown(Exception ex) {
+        LOGGER.error(ex.getClass().getName(), ex, DataMapHolder.getLogMap());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 }
