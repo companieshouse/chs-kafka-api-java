@@ -1,6 +1,6 @@
 package uk.gov.companieshouse.chskafka.auth;
 
-import static uk.gov.companieshouse.chskafka.Application.NAMESPACE;
+import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 import static uk.gov.companieshouse.chskafka.auth.AuthConstants.API_KEY_IDENTITY_TYPE;
 import static uk.gov.companieshouse.chskafka.auth.AuthConstants.ERIC_AUTHORISED_KEY_PRIVILEGES_HEADER;
 import static uk.gov.companieshouse.chskafka.auth.AuthConstants.ERIC_IDENTITY;
@@ -17,17 +17,12 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import uk.gov.companieshouse.chskafka.logging.DataMapHolder;
-import uk.gov.companieshouse.logging.Logger;
-import uk.gov.companieshouse.logging.LoggerFactory;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
-
     @Override
     public boolean preHandle(HttpServletRequest request, @Nonnull HttpServletResponse response, @Nullable Object handler) {
-
         String ericIdentity = request.getHeader(ERIC_IDENTITY);
         String ericIdentityType = request.getHeader(ERIC_IDENTITY_TYPE);
 
@@ -43,7 +38,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        if (!isKeyAuthorised(request)) {
+        if (!hasInternalPrivileges(request)) {
             LOGGER.error("Key is not authorised", DataMapHolder.getLogMap());
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return false;
@@ -51,7 +46,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private boolean isKeyAuthorised(HttpServletRequest request) {
+    private boolean hasInternalPrivileges(HttpServletRequest request) {
         String[] privileges = getApiKeyPrivileges(request);
 
         return ArrayUtils.contains(privileges, INTERNAL_APP_PRIVILEGE);

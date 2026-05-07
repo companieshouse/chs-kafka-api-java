@@ -2,7 +2,7 @@ package uk.gov.companieshouse.chskafka.logging;
 
 
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
-import static uk.gov.companieshouse.chskafka.Application.NAMESPACE;
+import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 import static uk.gov.companieshouse.logging.util.LogContextProperties.REQUEST_ID;
 
 import jakarta.annotation.Nonnull;
@@ -16,19 +16,17 @@ import java.util.UUID;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import uk.gov.companieshouse.logging.Logger;
-import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.logging.util.RequestLogger;
 
 @Component
 @Order(value = HIGHEST_PRECEDENCE)
 public class RequestLoggingFilter extends OncePerRequestFilter implements RequestLogger {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
     private static final String HEALTHCHECK_PATH = "/healthcheck"; // NOSONAR
 
     @Override
-    protected void doFilterInternal(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response,
+    protected void doFilterInternal(@Nonnull HttpServletRequest request,
+            @Nonnull HttpServletResponse response,
             @Nonnull FilterChain filterChain) throws ServletException, IOException {
         logStartRequestProcessing(request, LOGGER);
         DataMapHolder.initialise(Optional
