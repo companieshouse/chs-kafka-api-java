@@ -1,6 +1,5 @@
 package uk.gov.companieshouse.chskafka.filingprocessed;
 
-import java.util.Map;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +13,12 @@ import uk.gov.companieshouse.chskafka.common.kafka.KafkaPayloadSerialiser;
 import uk.gov.companieshouse.chskafka.common.kafka.KafkaProducer;
 import uk.gov.companieshouse.filing.processed.FilingProcessed;
 
+import java.util.Map;
+
 @Configuration
 class FilingProcessedKafkaConfig implements KafkaConfig<FilingProcessed> {
 
-    @Bean
+    @Bean(name = "filingProcessedProducerFactory")
     @Override
     public ProducerFactory<String, FilingProcessed> producerFactory(
             @Value("${kafka.bootstrap-servers}") String bootstrapAddress) {
@@ -31,16 +32,16 @@ class FilingProcessedKafkaConfig implements KafkaConfig<FilingProcessed> {
                 new KafkaPayloadSerialiser<>(FilingProcessed.class));
     }
 
-    @Bean
+    @Bean(name = "filingProcessedKafkaTemplate")
     @Override
     public KafkaTemplate<String, FilingProcessed> kafkaTemplate(ProducerFactory<String, FilingProcessed> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
     }
 
-    @Bean
+    @Bean(name = "filingProcessedKafkaProducer")
     @Override
     public KafkaProducer<FilingProcessed> kafkaProducer(@Value("${kafka.topic.filing-processed}") String topic,
-            KafkaTemplate<String, FilingProcessed> kafkaTemplate) {
+                                                        KafkaTemplate<String, FilingProcessed> kafkaTemplate) {
         return new KafkaProducer<>(topic, kafkaTemplate);
     }
 }
