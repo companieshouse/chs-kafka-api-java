@@ -21,7 +21,7 @@
         <!-- external -->
         <spring.boot.version>4.0.6</spring.boot.version>
         <!-- companies house -->
-        <kafka-models.version>3.0.31</kafka-models.version>
+        <kafka-models.version>unversioned</kafka-models.version>
         <private-api-sdk-java.version>6.0.6</private-api-sdk-java.version>
         <structured-logging.version>3.0.55</structured-logging.version>
         <!-- test -->
@@ -40,6 +40,18 @@
                 <scope>import</scope>
             </dependency>
             <!-- start fix versions for vulnerable transitive dependencies -->
+            <!--CVE-2026-41284, CVE-2026-42498, CVE-2026-43514-->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <version>11.0.22</version>
+            </dependency>
+            <!--CVE-2026-41284-->
+            <dependency>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-websocket</artifactId>
+                <version>11.0.22</version>
+            </dependency>
             <!-- end fix versions for vulnerable transitive dependencies -->
         </dependencies>
     </dependencyManagement>

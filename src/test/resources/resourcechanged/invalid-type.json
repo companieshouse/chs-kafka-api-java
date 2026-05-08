@@ -1,0 +1,11 @@
+{
+  "resource_uri": "/company/55667788",
+  "resource_kind": "company",
+  "context_id": "ctx-006",
+  "event": {
+    "fields_changed": "should-be-array",
+    "published_at": "2026-05-15T15:00:00Z",
+    "type": "UPDATED"
+  }
+}
+
