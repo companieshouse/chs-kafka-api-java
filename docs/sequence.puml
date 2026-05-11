@@ -1,0 +1,19 @@
+@startuml
+actor Client
+participant "Controller" as Controller
+participant "Service" as Service
+participant "Mapper" as Mapper
+participant "KafkaProducer" as Producer
+participant "Kafka Topic" as Kafka
+
+Client -> Controller: HTTP POST /<endpoint>\n(JSON request)
+Controller -> Service: processAndPublish(request)
+Service -> Mapper: map(request)
+Mapper --> Service: Avro model
+Service -> Producer: publishMessage(Avro model)
+Producer -> Kafka: Send message to topic
+Kafka --> Producer: Ack
+Producer --> Service: (void)
+Service --> Controller: (void)
+Controller -> Client: HTTP 201 Created
+@enduml

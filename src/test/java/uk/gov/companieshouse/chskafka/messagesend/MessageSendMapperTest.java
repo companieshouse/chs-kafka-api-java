@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import email.message_send;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.api.chskafka.MessageSend;
 import uk.gov.companieshouse.api.chskafka.MessageSendData;
 import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
@@ -12,9 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class MessageSendMapperTest {
 
     private static final String MESSAGE_ID = "msg-001";
@@ -25,16 +28,19 @@ class MessageSendMapperTest {
     private static final String COMPANY_NAME = "My New Company";
     private static final String COMPANY_NUMBER = "00006400";
 
+    @Mock
+    ObjectMapper objectMapper;
+
     @Test
-    void map_shouldMapAllFieldsAndSerializeData() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-        MessageSendMapper mapper = new MessageSendMapper(objectMapper);
+    void mapShouldMapAllFieldsAndSerializeData() throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        MessageSendMapper messageSendMapper = new MessageSendMapper(mapper);
 
         MessageSend request = createMessageSend();
         MessageSendData data = request.getData();
 
         // Act
-        message_send result = mapper.map(request);
+        message_send result = messageSendMapper.map(request);
 
         // Assert
         assertEquals(MESSAGE_ID, result.getMessageId());
@@ -44,13 +50,12 @@ class MessageSendMapperTest {
         assertEquals(MESSAGE_TYPE, result.getMessageType());
 
         // The data field should be a JSON string
-        String expectedJson = objectMapper.writeValueAsString(data);
+        String expectedJson = mapper.writeValueAsString(data);
         assertEquals(expectedJson, result.getData());
     }
 
     @Test
     void map_shouldThrowInvalidPayloadExceptionOnSerializationError() throws Exception {
-        ObjectMapper objectMapper = mock(ObjectMapper.class);
         MessageSendMapper mapper = new MessageSendMapper(objectMapper);
 
         MessageSend request = createMessageSend();

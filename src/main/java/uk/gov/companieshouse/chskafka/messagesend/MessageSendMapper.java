@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.chskafka.MessageSend;
 import uk.gov.companieshouse.chskafka.common.Mapper;
 import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
+import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
+
+import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 
 @Component
 class MessageSendMapper implements Mapper<MessageSend, message_send> {
@@ -18,17 +21,19 @@ class MessageSendMapper implements Mapper<MessageSend, message_send> {
 
     @Override
     public message_send map(MessageSend request) {
-        message_send message_send = new message_send();
-        message_send.setMessageId(request.getMessageId());
-        message_send.setUserId(request.getUserId());
-        message_send.setAppId(request.getAppId());
+        message_send messageSend = new message_send();
+        messageSend.setMessageId(request.getMessageId());
+        messageSend.setUserId(request.getUserId());
+        messageSend.setAppId(request.getAppId());
         try {
-            message_send.setData(objectMapper.writeValueAsString(request.getData()));
-        } catch (Exception e) {
-            throw new InvalidPayloadException("Failed to serialize data for messageId %s".formatted(request.getMessageId()), e);
+            messageSend.setData(objectMapper.writeValueAsString(request.getData()));
+        } catch (Exception ex) {
+            final String msg = "Error serialising messageSendData payload for messageId %s".formatted(request.getMessageId());
+            LOGGER.error(msg, ex, DataMapHolder.getLogMap());
+            throw new InvalidPayloadException(msg, ex);
         }
-        message_send.setCreatedAt(request.getCreatedAt());
-        message_send.setMessageType(request.getMessageType());
-        return message_send;
+        messageSend.setCreatedAt(request.getCreatedAt());
+        messageSend.setMessageType(request.getMessageType());
+        return messageSend;
     }
 }

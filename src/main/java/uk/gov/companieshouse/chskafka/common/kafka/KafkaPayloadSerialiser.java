@@ -1,15 +1,17 @@
 package uk.gov.companieshouse.chskafka.common.kafka;
 
-import static uk.gov.companieshouse.chskafka.Application.LOGGER;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.reflect.ReflectDatumWriter;
 import org.apache.kafka.common.serialization.Serializer;
 import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
+import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 
 public class KafkaPayloadSerialiser<T> implements Serializer<T> {
 
@@ -27,8 +29,9 @@ public class KafkaPayloadSerialiser<T> implements Serializer<T> {
         try {
             writer.write(data, encoder);
         } catch (IOException ex) {
-            LOGGER.error("Error serialising message payload", ex);
-            throw new InvalidPayloadException("Error serialising message payload", ex);
+            final String msg = "Error serialising message payload";
+            LOGGER.error(msg, ex, DataMapHolder.getLogMap());
+            throw new InvalidPayloadException(msg, ex);
         }
         return outputStream.toByteArray();
     }
