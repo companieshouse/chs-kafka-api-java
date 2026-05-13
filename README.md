@@ -38,63 +38,26 @@ while common functionality is placed in a shared common package.
 
 ---
 
-## Sequence Diagram
-
-The following sequence diagram illustrates the generic endpoint flow:
-
-[!Sequence Diagram](docs/sequence.png)
-
----
-
 ## End Point Flow
 
 ### Filing Processed Feature Flow
 
-- **FilingProcessedController**
-    - **Responsibility:** Handles HTTP POST requests for processed filings.
-    - **Input:** Receives a `ProcessedFiling` API model (Java POJO) as the request body.
-    - **Action:** Validates the request and delegates processing to the service layer.
-
-- **FilingProcessedService**
-    - **Responsibility:** Orchestrates the mapping and publishing of processed filing data.
-    - **Action:** Calls the mapper to convert the API model to the Avro model, then publishes it to Kafka using the
-      producer.
-
-- **FilingProcessedMapper**
-    - **Responsibility:** Converts the `ProcessedFiling` API model to the Avro model `filing_processed` (from the Avro
-      schema).
-    - **Action:** Handles field mapping, including any necessary transformations (e.g., date/time formatting, null
-      handling).
-
-- **FilingProcessedKafkaConfig**
-    - **Responsibility:** Configures the Kafka producer beans for the filing processed topic.
-    - **Action:** Sets up the producer factory, Kafka template, and producer for the `filing_processed` Avro type.
-
-- **LocalDateTimeSupplier**
-    - **Responsibility:** Supplies the current `LocalDateTime` when needed (e.g., for timestamp fields in the Avro
-      model).
-    - **Usage:** Used by the mapper or service to populate date/time fields in the outgoing Kafka message.
+The Filing Processed feature allows internal services to submit processed filing information via a dedicated HTTP POST
+endpoint. Incoming requests containing a ProcessedFiling Java model are validated, mapped to the Avro filing_processed
+schema (with support for date/time transformations), and published to the filing-processed Kafka topic.
 
 ### Message Send Feature Flow
 
-- **MessageSendController**
-    - **Responsibility:** Handles HTTP POST requests for sending messages.
-    - **Input:** Receives a `MessageSend` API model (Java POJO) as the request body.
-    - **Action:** Validates the request and delegates processing to the service layer.
+The Message Send feature enables internal services to send generic messages via a dedicated HTTP POST endpoint. Incoming
+requests containing a MessageSend Java model are validated, mapped to the Avro message_send schema, and published to the
+message-send Kafka topic.
 
-- **MessageSendService**
-    - **Responsibility:** Orchestrates the mapping and publishing of message send .
-    - **Action:** Calls the mapper to convert the API model to the Avro model, then publishes it to Kafka using the
-      producer.
+### Endpoints Overview
 
-- **MessageSendMapper**
-    - **Responsibility:** Converts the `MessageSend` API model to the Avro model message_send (as defined in the Avro
-      schema).
-    - **Action:** Handles field mapping, including any necessary transformations (e.g., serializing nested data fields).
-
-- **MessageSendKafkaConfig**
-    - **Responsibility:** Configures the Kafka producer beans for the message send topic.
-    - **Action:** Sets up the producer factory, Kafka template, and producer for the message send Avro type.
+| Endpoint URI                | HTTP Method | Request Body Model | Avro Model Published | Kafka Topic      |
+|-----------------------------|-------------|--------------------|----------------------|------------------|
+| `/private/filing-processed` | POST        | ProcessedFiling    | filing_processed     | filing-processed |
+| `/message-send`             | POST        | MessageSend        | message_send         | message-send     |
 
 ---
 
@@ -127,17 +90,17 @@ processing of requests.
 This approach ensures that clients receive meaningful error messages and that failures are handled gracefully and
 consistently across all endpoints.
 
-## Docker support
+## Getting started
 
-Pull image from private CH registry by
-running `docker pull 416670754337.dkr.ecr.eu-west-2.amazonaws.com/chs-kafka-api-java:latest` command
-or run the following steps to build image locally:
+To checkout and build the service:
 
-1. `export SSH_PRIVATE_KEY_PASSPHRASE='[your SSH key passhprase goes here]'` (optional, set only if SSH key is
-   passphrase protected)
-2.
+1. Clone [Docker CHS Development](https://github.com/companieshouse/docker-chs-development) and follow the steps in the
+   README.
+2. Run `./bin/chs-dev services enable chs-kafka-api-java`
+3. Run `./bin/chs-dev development enable chs-kafka-api-java` if you wish to see changes in the code dynamically
+4. Run `chs-dev up` in the docker-chs-development directory.
 
-`DOCKER_BUILDKIT=0 docker build --build-arg SSH_PRIVATE_KEY="$(cat ~/.ssh/id_rsa)" --build-arg SSH_PRIVATE_KEY_PASSPHRASE -t 416670754337.dkr.ecr.eu-west-2.amazonaws.com/chs-kafka-api-java:latest .`
+These instructions are for a local docker environment.
 
 ## Configuration
 
