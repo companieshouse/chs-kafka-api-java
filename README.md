@@ -43,7 +43,7 @@ while common functionality is placed in a shared common package.
 ### Filing Processed Feature Flow
 
 The Filing Processed feature allows internal services to submit processed filing information via a dedicated HTTP POST
-endpoint. Incoming requests containing a ProcessedFiling Java model are validated, mapped to the Avro filing_processed
+endpoint. Incoming requests containing a ProcessedFiling Java model are validated, mapped to the Avro FilingProcessed
 schema (with support for date/time transformations), and published to the filing-processed Kafka topic.
 
 ### Message Send Feature Flow
@@ -56,7 +56,7 @@ message-send Kafka topic.
 
 | Endpoint URI                | HTTP Method | Request Body Model | Avro Model Published | Kafka Topic      |
 |-----------------------------|-------------|--------------------|----------------------|------------------|
-| `/private/filing-processed` | POST        | ProcessedFiling    | filing_processed     | filing-processed |
+| `/private/filing-processed` | POST        | ProcessedFiling    | FilingProcessed      | filing-processed |
 | `/message-send`             | POST        | MessageSend        | message_send         | message-send     |
 
 ---
@@ -72,11 +72,12 @@ processing of requests.
       applicable.
 
 - **Custom Exceptions**
-    - **InvalidPayloadException:** Thrown when incoming requests fail validation or contain malformed data.
+    - **InvalidPayloadException:** Thrown when incoming requests contain malformed data.
     - **BadGatewayException:** Used to signal issues when communicating with downstream services or Kafka.
 
 - **Validation**
-    - Incoming requests are validated in the controller layer. If validation fails, an `InvalidPayloadException` is
+    - Incoming requests are validated in the controller layer. If validation fails, an `MethodArgumentNotValidException`
+      is
       thrown and handled globally.
 
 - **Problem Details**
