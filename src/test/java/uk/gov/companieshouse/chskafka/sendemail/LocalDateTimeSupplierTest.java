@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.chskafka.sendemail;
 
 import org.junit.jupiter.api.Test;
+import uk.gov.companieshouse.chskafka.common.LocalDateTimeSupplier;
 
 import java.time.LocalDateTime;
 import java.util.function.Supplier;

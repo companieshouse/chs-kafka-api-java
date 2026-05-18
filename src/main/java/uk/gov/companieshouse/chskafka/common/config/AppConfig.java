@@ -21,4 +21,9 @@ public class AppConfig {
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
+//TODO Suggestion
+//    @Bean
+//    public Supplier<LocalDateTime> localDateTimeSupplier() {
+//        return LocalDateTime::now;
+//    }
 }

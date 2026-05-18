@@ -13,7 +13,7 @@ class SendEmailKafkaConfig implements KafkaConfig<email_send> {
 
     @Bean(name = "emailSendProducerFactory")
     @Override
-    public KafkaProducer<email_send> kafkaProducer(@Value("$kafka.topic.email-send") String topic,
+    public KafkaProducer<email_send> kafkaProducer(@Value("${kafka.topic.email-send}") String topic,
                                                    KafkaProducerConfigFactory producerConfigFactory) {
         return producerConfigFactory.kafkaProducer(topic, email_send.class);
     }

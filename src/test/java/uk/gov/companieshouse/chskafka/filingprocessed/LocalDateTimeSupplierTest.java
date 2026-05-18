@@ -1,10 +1,12 @@
 package uk.gov.companieshouse.chskafka.filingprocessed;
 
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import org.junit.jupiter.api.Test;
+import uk.gov.companieshouse.chskafka.common.LocalDateTimeSupplier;
 
 import java.time.LocalDateTime;
 import java.util.function.Supplier;
-import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 class LocalDateTimeSupplierTest {
 

@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.api.chskafka.SendEmail;
+import uk.gov.companieshouse.chskafka.common.LocalDateTimeSupplier;
 
 import java.time.LocalDateTime;
 

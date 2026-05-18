@@ -1,11 +1,12 @@
-package uk.gov.companieshouse.chskafka.filingprocessed;
+package uk.gov.companieshouse.chskafka.common;
+
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.function.Supplier;
-import org.springframework.stereotype.Component;
 
 @Component
-class LocalDateTimeSupplier implements Supplier<LocalDateTime> {
+public class LocalDateTimeSupplier implements Supplier<LocalDateTime> {
 
     @Override
     public LocalDateTime get() {
