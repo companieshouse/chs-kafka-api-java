@@ -65,7 +65,7 @@ published to the email-send Kafka topic.
 |-----------------------------|-------------|--------------------|----------------------|------------------|
 | `/private/filing-processed` | POST        | ProcessedFiling    | FilingProcessed      | filing-processed |
 | `/message-send`             | POST        | MessageSend        | message_send         | message-send     |
-| `/email-send`               | POST        | SendEmail          | email_send           | email-send       |
+| `/send-email`               | POST        | SendEmail          | email_send           | email-send       |
 
 ---
 
