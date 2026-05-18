@@ -1,0 +1,6 @@
+{
+  "app_id": "chs-monitor-notification-matcher.filing",
+  "message_type": "monitor_email",
+  "json_data": "{\"customer_email\":\"joe@bloggs.com\",\"customer_feedback\":\"Great site man\",\"customer_name\":\"Joe Bloggs\"}",
+  "email_address": "joe@bloggs.com"
+}
