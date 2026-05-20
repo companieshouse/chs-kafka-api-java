@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 import uk.gov.companieshouse.chskafka.common.AbstractControllerIT;
+import uk.gov.companieshouse.chskafka.common.LocalDateTimeSupplier;
 
 import java.time.LocalDateTime;
 
@@ -65,7 +66,7 @@ class SendEmailControllerIT extends AbstractControllerIT<email_send> {
         response.andExpectAll(status().isBadRequest(),
                 jsonPath("$.title").value(HttpStatus.BAD_REQUEST.getReasonPhrase()),
                 jsonPath("$.status").value(HttpStatus.BAD_REQUEST.value()),
-                jsonPath("$.detail").value("Failed to read request"),
+                jsonPath("$.detail").value("Invalid request content."),
                 jsonPath("$.instance").value("/send-email"));
         assertZeroMessagesPublished();
     }
