@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>chs-kafka-api-java</artifactId>
     <version>unversioned</version>
@@ -11,24 +10,36 @@
         <relativePath/>
     </parent>
     <properties>
-        <!-- build -->
+        <!--Build-->
         <java.version>21</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!-- external -->
-        <spring.boot.version>4.0.6</spring.boot.version>
-        <!-- companies house -->
+        <!--Companies House-->
         <kafka-models.version>unversioned</kafka-models.version>
         <private-api-sdk-java.version>6.0.6</private-api-sdk-java.version>
         <structured-logging.version>3.0.55</structured-logging.version>
-        <!-- test -->
-        <maven-failsafe-plugin.version>3.5.5</maven-failsafe-plugin.version>
-        <maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
+        <!--External-->
+        <avro.version>1.11.5</avro.version>
+        <commons-lang3.version>3.19.0</commons-lang3.version>
+        <guava.version>32.1.2-jre</guava.version>
+        <jackson-annotations.version>2.21</jackson-annotations.version>
+        <jackson-core.version>2.21.2</jackson-core.version>
+        <jackson-databind.version>2.21.2</jackson-databind.version>
+        <jackson-datatype-jsr310.version>2.21.2</jackson-datatype-jsr310.version>
+        <jakarta-annotation-api.version>3.0.0</jakarta-annotation-api.version>
+        <jakarta-validation-api.version>3.1.1</jakarta-validation-api.version>
+        <kafka-clients.version>4.1.2</kafka-clients.version>
+        <tomcat-embed-core.version>11.0.22</tomcat-embed-core.version>
+        <tomcat-embed-websocket.version>11.0.22</tomcat-embed-websocket.version>
+        <!--Plugin Properties-->
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <jib-maven-plugin.version>3.5.1</jib-maven-plugin.version>
+        <maven-failsafe-plugin.version>3.5.5</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
+        <spring.boot.version>4.0.6</spring.boot.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -58,12 +69,59 @@
     <dependencies>
         <!-- external -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-annotations.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-kafka</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-datatype-jsr310.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>${jakarta-annotation-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>${jakarta-validation-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>${avro.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>${kafka-clients.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat-embed-core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -72,6 +130,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aspectj</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-kafka</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -87,7 +149,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <!-- companies house -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- companies house-->
         <dependency>
             <groupId>uk.gov.companieshouse</groupId>
             <artifactId>kafka-models</artifactId>
@@ -98,7 +164,6 @@
             <artifactId>private-api-sdk-java</artifactId>
             <version>${private-api-sdk-java.version}</version>
             <exclusions>
-                <!-- not required, use logback instead -->
                 <exclusion>
                     <groupId>org.apache.logging.log4j</groupId>
                     <artifactId>log4j-api</artifactId>
@@ -110,17 +175,16 @@
             <artifactId>structured-logging</artifactId>
             <version>${structured-logging.version}</version>
             <exclusions>
-                <!-- not required, use logback instead -->
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-simple</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- test -->
+        <!--Test-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <artifactId>spring-boot-starter-kafka-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -130,22 +194,17 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-kafka-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers-kafka</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers-kafka</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
