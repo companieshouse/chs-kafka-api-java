@@ -24,11 +24,11 @@ class ResourceChangedControllerIT extends AbstractControllerIT<ResourceChanged> 
 
     @ParameterizedTest
     @CsvSource({
-            "/resourceChanged/minimal-valid-request.json, /resourceChanged/minimal-valid-message.json",
-            "/resourceChanged/full-valid-request.json, /resourceChanged/full-valid-message.json",
-            "/resourceChanged/deleted-event-request.json, /resourceChanged/deleted-event-message.json",
-            "/resourceChanged/accepted-request.json, /resourceChanged/accepted-message.json",
-            "/resourceChanged/unknown-fields-request.json, /resourceChanged/unknown-fields-message.json"
+            "/resourcechanged/minimal-valid-request.json, /resourcechanged/minimal-valid-message.json",
+            "/resourcechanged/full-valid-request.json, /resourcechanged/full-valid-message.json",
+            "/resourcechanged/deleted-event-request.json, /resourcechanged/deleted-event-message.json",
+            "/resourcechanged/accepted-request.json, /resourcechanged/accepted-message.json",
+            "/resourcechanged/unknown-fields-request.json, /resourcechanged/unknown-fields-message.json"
     })
     void shouldPublishResourceChangedToKafkaSuccessfully(String request, String expectedMessage) throws Exception {
         // given
@@ -47,7 +47,7 @@ class ResourceChangedControllerIT extends AbstractControllerIT<ResourceChanged> 
     @Test
     void shouldReturn400WhenInvalidRequestBody() throws Exception {
         // given
-        String requestBody = readResource("/resourceChanged/request-invalid.json");
+        String requestBody = readResource("/resourcechanged/request-invalid.json");
 
         // when
         ResultActions response = mockMvcPost(requestBody, "/private/resource-changed");
@@ -64,7 +64,7 @@ class ResourceChangedControllerIT extends AbstractControllerIT<ResourceChanged> 
     @Test
     void shouldReturn401WhenNoEricIdentity() throws Exception {
         // given
-        String requestBody = readResource("/resourceChanged/request-invalid.json");
+        String requestBody = readResource("/resourcechanged/request-invalid.json");
 
         // when
         ResultActions response = mockMvc.perform(post("/private/resource-changed")
@@ -80,7 +80,7 @@ class ResourceChangedControllerIT extends AbstractControllerIT<ResourceChanged> 
     @Test
     void shouldReturn401WhenNoEricIdentityType() throws Exception {
         // given
-        String requestBody = readResource("/resourceChanged/request-invalid.json");
+        String requestBody = readResource("/resourcechanged/request-invalid.json");
 
         // when
         ResultActions response = mockMvc.perform(post("/private/resource-changed")
@@ -97,7 +97,7 @@ class ResourceChangedControllerIT extends AbstractControllerIT<ResourceChanged> 
     @Test
     void shouldReturn403WhenNoInternalPrivileges() throws Exception {
         // given
-        String requestBody = readResource("/resourceChanged/request-invalid.json");
+        String requestBody = readResource("/resourcechanged/request-invalid.json");
 
         // when
         ResultActions response = mockMvc.perform(post("/private/resource-changed")
@@ -114,9 +114,9 @@ class ResourceChangedControllerIT extends AbstractControllerIT<ResourceChanged> 
 
     @ParameterizedTest
     @CsvSource({
-            "/resourceChanged/missing-event.json",
-            "/resourceChanged/invalid-type.json",
-            "/resourceChanged/null-fields.json"
+            "/resourcechanged/missing-event.json",
+            "/resourcechanged/invalid-type.json",
+            "/resourcechanged/null-fields.json"
     })
     void shouldReturn400ForAdditionalInvalidPayloads(String requestFile) throws Exception {
         // given
