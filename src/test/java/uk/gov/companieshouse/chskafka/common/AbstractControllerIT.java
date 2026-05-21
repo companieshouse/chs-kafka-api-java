@@ -26,17 +26,13 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.kafka.ConfluentKafkaContainer;
 
-@Testcontainers
 @AutoConfigureMockMvc
 @Import(TestKafkaConfig.class)
 public abstract class AbstractControllerIT<T> {
 
-    @Container
-    protected static final ConfluentKafkaContainer kafka = new ConfluentKafkaContainer("confluentinc/cp-kafka:latest");
+    protected static final ConfluentKafkaContainer kafka = SharedKafkaContainer.getInstance();
 
     @Autowired
     protected MockMvc mockMvc;

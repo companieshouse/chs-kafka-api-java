@@ -8,11 +8,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import uk.gov.companieshouse.api.chskafka.ChangedResource;
 import uk.gov.companieshouse.api.chskafka.ChangedResourceEvent;
-import uk.gov.companieshouse.api.chskafka.MessageSend;
-import uk.gov.companieshouse.api.chskafka.MessageSendData;
 import uk.gov.companieshouse.chskafka.common.Service;
 import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
-import uk.gov.companieshouse.stream.EventRecord;
 import uk.gov.companieshouse.stream.ResourceChanged;
 
 import java.util.List;
