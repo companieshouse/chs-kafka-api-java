@@ -1,0 +1,12 @@
+{
+  "resource_kind": "company",
+  "resource_uri": "/company/12345678",
+  "context_id": "ctx-001",
+  "deleted_data": "",
+  "event": {
+    "published_at": "2026-05-15T16:00:00Z",
+    "type": "changed",
+    "fields_changed": { "array": ["some.field"] }
+  }
+}
+

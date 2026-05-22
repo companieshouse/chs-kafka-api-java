@@ -1,0 +1,12 @@
+{
+  "resource_uri": "/company/12312312",
+  "resource_kind": "company",
+  "context_id": "ctx-accepted",
+  "event": {
+    "fields_changed": { "array": ["incorporationDate"] },
+    "published_at": "2026-05-15T16:00:00Z",
+    "type": "ACCEPTED"
+  },
+  "deleted_data": ""
+}
+

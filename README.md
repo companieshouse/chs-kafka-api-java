@@ -46,6 +46,13 @@ The Filing Processed feature allows internal services to submit processed filing
 endpoint. Incoming requests containing a ProcessedFiling Java model are validated, mapped to the Avro FilingProcessed
 schema (with support for date/time transformations), and published to the filing-processed Kafka topic.
 
+### Resource Changed Feature Flow
+
+The Resource Changed feature allows internal services to submit resource changed information via a dedicated HTTP POST
+endpoint. Incoming requests containing a ChangedResources Java model are validated, mapped to the Avro ResourceChanged
+schema, and published to the resource-changed Kafka topic. If the ChangedResources represents a deletion event, the
+mapper will map the `deleted_data` object to a JSON string. 
+
 ### Message Send Feature Flow
 
 The Message Send feature enables internal services to send generic messages via a dedicated HTTP POST endpoint. Incoming
@@ -54,10 +61,11 @@ message-send Kafka topic.
 
 ### Endpoints Overview
 
-| Endpoint URI                | HTTP Method | Request Body Model | Avro Model Published | Kafka Topic      |
-|-----------------------------|-------------|--------------------|----------------------|------------------|
-| `/private/filing-processed` | POST        | ProcessedFiling    | FilingProcessed      | filing-processed |
-| `/message-send`             | POST        | MessageSend        | message_send         | message-send     |
+| Endpoint URI                 | HTTP Method | Request Body Model | Avro Model Published | Kafka Topic      |
+|------------------------------|-------------|--------------------|----------------------|------------------|
+| `/private/filing-processed`  | POST        | ProcessedFiling    | FilingProcessed      | filing-processed |
+| `/private/resource-changed`  | POST        | ChangedResource    | ResourceChanged      | resource-changed |
+| `/message-send`              | POST        | MessageSend        | message_send         | message-send     |
 
 ---
 

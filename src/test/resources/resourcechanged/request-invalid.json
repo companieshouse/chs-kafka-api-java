@@ -1,0 +1,11 @@
+{
+  "resource_uri": 123,
+  "resource_kind": ["company"],
+  "context_id": null,
+  "event": {
+    "published_at": null,
+    "type": null,
+    "fields_changed": "not-an-array"
+  }
+}
+

@@ -1,0 +1,15 @@
+{
+  "resource_uri": "/company/11223344",
+  "resource_kind": "company",
+  "context_id": "ctx-003",
+  "deleted_data": {
+    "status": "dissolved",
+    "dissolvedOn": "2026-05-15"
+  },
+  "event": {
+    "fields_changed": ["status"],
+    "published_at": "2026-05-15T13:00:00Z",
+    "type": "deleted"
+  }
+}
+
