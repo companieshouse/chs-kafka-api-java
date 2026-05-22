@@ -15,9 +15,9 @@ import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 @Component
 class ResourceChangedMapper implements Mapper<ChangedResource, ResourceChanged> {
 
-    private final ObjectMapper mapper;
-
     private static final String EMPTY_STRING = "";
+
+    private final ObjectMapper mapper;
 
     public ResourceChangedMapper(ObjectMapper mapper) {
         this.mapper = mapper;

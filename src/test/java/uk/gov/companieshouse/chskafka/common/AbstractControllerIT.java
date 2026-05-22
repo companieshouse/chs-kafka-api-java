@@ -1,13 +1,6 @@
 package uk.gov.companieshouse.chskafka.common;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
 import com.google.common.collect.Iterables;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.util.List;
 import org.apache.avro.Schema;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.Decoder;
@@ -16,6 +9,7 @@ import org.apache.avro.reflect.ReflectDatumReader;
 import org.apache.commons.io.IOUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -28,11 +22,24 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.testcontainers.kafka.ConfluentKafkaContainer;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 @AutoConfigureMockMvc
 @Import(TestKafkaConfig.class)
 public abstract class AbstractControllerIT<T> {
 
-    protected static final ConfluentKafkaContainer kafka = SharedKafkaContainer.getInstance();
+    protected static final ConfluentKafkaContainer kafka = new ConfluentKafkaContainer("confluentinc/cp-kafka:7.6.1");
+
+    @BeforeAll
+    static void startKafka() {
+        kafka.start();
+    }
 
     @Autowired
     protected MockMvc mockMvc;
