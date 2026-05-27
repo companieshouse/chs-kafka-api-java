@@ -59,15 +59,22 @@ The Message Send feature enables internal services to send generic messages via 
 requests containing a MessageSend Java model are validated, mapped to the Avro message_send schema, and published to the
 message-send Kafka topic.
 
+
+### Email Send Feature Flow
+
+The Email Send feature enables internal services to send email fields to the application via a dedicated HTTP POST 
+endpoint. Incoming requests containing a SendEmail Java model are validated, mapped to the Avro email_send schema, and 
+published to the email-send Kafka topic.
+
 ### Endpoints Overview
 
-| Endpoint URI                 | HTTP Method | Request Body Model | Avro Model Published | Kafka Topic      |
-|------------------------------|-------------|--------------------|----------------------|------------------|
-| `/private/filing-processed`  | POST        | ProcessedFiling    | FilingProcessed      | filing-processed |
-| `/private/resource-changed`  | POST        | ChangedResource    | ResourceChanged      | resource-changed |
-| `/message-send`              | POST        | MessageSend        | message_send         | message-send     |
 
----
+| Endpoint URI                | HTTP Method | Request Body Model | Avro Model Published | Kafka Topic      |
+|-----------------------------|-------------|--------------------|----------------------|------------------|
+| `/private/filing-processed` | POST        | ProcessedFiling    | FilingProcessed      | filing-processed |
+| `/private/resource-changed` | POST        | ChangedResource    | ResourceChanged      | resource-changed |
+| `/message-send`             | POST        | MessageSend        | message_send         | message-send     |
+| `/send-email`               | POST        | SendEmail          | email_send           | email-send       |
 
 ### Error Handling
 

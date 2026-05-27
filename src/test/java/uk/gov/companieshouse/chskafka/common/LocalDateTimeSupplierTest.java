@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.chskafka.filingprocessed;
+package uk.gov.companieshouse.chskafka.common;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
