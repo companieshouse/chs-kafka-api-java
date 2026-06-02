@@ -32,9 +32,12 @@ class MessageSendControllerIT extends AbstractControllerIT<message_send> {
 
     @ParameterizedTest
     @CsvSource({
-            "/messagesend/accepted-request.json, /messagesend/accepted-message.json",
-            "/messagesend/accepted-request-no-company-number.json, /messagesend/accepted-message-no-company-number.json"
-
+            "/messagesend/message-send-all-fields-request.json, /messagesend/message-send-all-fields-message.json",
+            "/messagesend/message-send-no-company-number-request.json, /messagesend/message-send-no-company-number-message.json",
+            "/messagesend/message-send-no-rejections-request.json, /messagesend/message-send-no-rejections-message.json",
+            "/messagesend/message-send-empty-rejections-request.json, /messagesend/message-send-empty-rejections-message.json",
+            "/messagesend/message-send-minimal-request.json, /messagesend/message-send-minimal-message.json",
+            "/messagesend/message-send-null-rejections-request.json ,/messagesend/message-send-null-rejections-message.json"
     })
     void shouldPublishMessageSendToKafkaSuccessfully(String request, String expectedMessage) throws Exception {
         // given
@@ -56,7 +59,7 @@ class MessageSendControllerIT extends AbstractControllerIT<message_send> {
     @Test
     void shouldReturn400WhenInvalidRequestBody() throws Exception {
         // given
-        String requestBody = readResource("/messagesend/request-invalid.json");
+        String requestBody = readResource("/messagesend/message-send-invalid-request.json");
 
         // when
         ResultActions response = mockMvcPost(requestBody, "/message-send");
@@ -73,7 +76,7 @@ class MessageSendControllerIT extends AbstractControllerIT<message_send> {
     @Test
     void shouldReturn401WhenNoEricIdentity() throws Exception {
         // given
-        String requestBody = readResource("/messagesend/request-invalid.json");
+        String requestBody = readResource("/messagesend/message-send-invalid-request.json");
 
         // when
         ResultActions response = mockMvc.perform(post("/message-send")
@@ -89,7 +92,7 @@ class MessageSendControllerIT extends AbstractControllerIT<message_send> {
     @Test
     void shouldReturn401WhenNoEricIdentityType() throws Exception {
         // given
-        String requestBody = readResource("/messagesend/request-invalid.json");
+        String requestBody = readResource("/messagesend/message-send-invalid-request.json");
 
         // when
         ResultActions response = mockMvc.perform(post("/message-send")
@@ -106,7 +109,7 @@ class MessageSendControllerIT extends AbstractControllerIT<message_send> {
     @Test
     void shouldReturn403WhenNoInternalPrivileges() throws Exception {
         // given
-        String requestBody = readResource("/messagesend/request-invalid.json");
+        String requestBody = readResource("/messagesend/message-send-invalid-request.json");
 
         // when
         ResultActions response = mockMvc.perform(post("/message-send")
