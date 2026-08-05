@@ -20,6 +20,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- external -->
         <spring.boot.version>4.1.0</spring.boot.version>
+        <avro.version>1.12.1</avro.version>
         <!-- companies house -->
         <ch-dependency-bom.version>0.1.15</ch-dependency-bom.version>
         <ch-test-bom.version>0.1.15</ch-test-bom.version>
@@ -80,6 +81,11 @@
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>${avro.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
