@@ -1,21 +1,21 @@
 package uk.gov.companieshouse.chskafka.messagesend;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import email.message_send;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import uk.gov.companieshouse.api.chskafka.MessageSend;
-import uk.gov.companieshouse.api.chskafka.MessageSendData;
-import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
+
+import email.message_send;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import uk.gov.companieshouse.api.chskafka.MessageSend;
+import uk.gov.companieshouse.api.chskafka.MessageSendData;
+import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
 
 @ExtendWith(MockitoExtension.class)
 class MessageSendMapperTest {
@@ -60,7 +60,7 @@ class MessageSendMapperTest {
 
         MessageSend request = createMessageSend();
 
-        when(objectMapper.writeValueAsString(any())).thenThrow(new JsonProcessingException("fail") {
+        when(objectMapper.writeValueAsString(any())).thenThrow(new JacksonException("fail") {
         });
 
         InvalidPayloadException ex = assertThrows(

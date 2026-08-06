@@ -1,8 +1,11 @@
 package uk.gov.companieshouse.chskafka.resourcechanged;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static uk.gov.companieshouse.chskafka.Application.LOGGER;
+
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.companieshouse.api.chskafka.ChangedResource;
 import uk.gov.companieshouse.chskafka.common.Mapper;
 import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
@@ -10,16 +13,15 @@ import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
 import uk.gov.companieshouse.stream.EventRecord;
 import uk.gov.companieshouse.stream.ResourceChanged;
 
-import static uk.gov.companieshouse.chskafka.Application.LOGGER;
-
 @Component
 class ResourceChangedMapper implements Mapper<ChangedResource, ResourceChanged> {
 
     private static final String EMPTY_STRING = "";
 
+    @Qualifier("objectMapper")
     private final ObjectMapper mapper;
 
-    public ResourceChangedMapper(ObjectMapper mapper) {
+    public ResourceChangedMapper(@Qualifier("objectMapper") ObjectMapper mapper) {
         this.mapper = mapper;
     }
 
@@ -41,10 +43,11 @@ class ResourceChangedMapper implements Mapper<ChangedResource, ResourceChanged> 
             try {
                 String jsonString = mapper.writeValueAsString(request.getDeletedData());
                 resourceChanged.setDeletedData(jsonString);
-            } catch ( JsonProcessingException ex) {
+            } catch (JacksonException ex) {
                 final String msg = "Error serialising deletedData for contextId %s".formatted(request.getContextId());
                 LOGGER.error(msg, ex, DataMapHolder.getLogMap());
-                throw new InvalidPayloadException(msg, ex);            }
+                throw new InvalidPayloadException(msg, ex);
+            }
         }
 
         if (resourceChanged.getDeletedData() == null) {
