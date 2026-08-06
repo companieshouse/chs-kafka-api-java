@@ -21,6 +21,7 @@
         <!-- external -->
         <spring.boot.version>4.1.0</spring.boot.version>
         <avro.version>1.12.1</avro.version>
+        <jackson.nullable.version>0.2.10</jackson.nullable.version>
         <!-- companies house -->
         <ch-dependency-bom.version>0.1.15</ch-dependency-bom.version>
         <ch-test-bom.version>0.1.15</ch-test-bom.version>
@@ -79,17 +80,9 @@
             <artifactId>jackson-annotations</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-        <dependency>
             <artifactId>jackson-databind-nullable</artifactId>
             <groupId>org.openapitools</groupId>
-            <version>0.2.10</version>
+            <version>${jackson.nullable.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

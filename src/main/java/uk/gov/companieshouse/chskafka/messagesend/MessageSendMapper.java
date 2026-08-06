@@ -15,10 +15,10 @@ import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
 @Component
 class MessageSendMapper implements Mapper<MessageSend, message_send> {
 
-    @Qualifier("snakeCaseMapper")
+    @Qualifier("objectMapper")
     private final ObjectMapper objectMapper;
 
-    MessageSendMapper(@Qualifier("snakeCaseMapper") ObjectMapper objectMapper) {
+    MessageSendMapper(@Qualifier("objectMapper") ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
