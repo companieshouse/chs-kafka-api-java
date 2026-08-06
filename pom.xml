@@ -1,196 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <artifactId>chs-kafka-api-java</artifactId>
-    <version>unversioned</version>
-    <name>chs-kafka-api-java</name>
-    <parent>
-        <groupId>uk.gov.companieshouse</groupId>
-        <artifactId>companies-house-parent</artifactId>
-        <version>2.1.14</version>
-        <relativePath/>
-    </parent>
-    <properties>
-        <!-- build -->
-        <java.version>21</java.version>
-        <maven.compiler.release>${java.version}</maven.compiler.release>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <!-- external -->
-        <spring.boot.version>4.1.0</spring.boot.version>
-        <avro.version>1.12.1</avro.version>
-        <!-- companies house -->
-        <ch-dependency-bom.version>0.1.15</ch-dependency-bom.version>
-        <ch-test-bom.version>0.1.15</ch-test-bom.version>
-        <private-api-sdk-java.version>7.2.4</private-api-sdk-java.version>
-        <!-- test -->
-        <maven-failsafe-plugin.version>3.5.6</maven-failsafe-plugin.version>
-        <maven-surefire-plugin.version>3.5.6</maven-surefire-plugin.version>
-        <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
-        <jib-maven-plugin.version>3.5.2</jib-maven-plugin.version>
-    </properties>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>uk.gov.companieshouse</groupId>
-                <artifactId>ch-dependency-bom</artifactId>
-                <version>${ch-dependency-bom.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-            <dependency>
-                <groupId>uk.gov.companieshouse</groupId>
-                <artifactId>ch-test-bom</artifactId>
-                <version>${ch-test-bom.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring.boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-    <dependencies>
-        <!-- external -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.annotation</groupId>
-            <artifactId>jakarta.annotation-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.avro</groupId>
-            <artifactId>avro</artifactId>
-            <version>${avro.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aspectj</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-kafka</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <!-- companies house -->
-        <dependency>
-            <groupId>uk.gov.companieshouse</groupId>
-            <artifactId>private-api-sdk-java</artifactId>
-            <version>${private-api-sdk-java.version}</version>
-            <exclusions>
-                <!-- not required, use logback instead -->
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.companieshouse</groupId>
-            <artifactId>kafka-models</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>uk.gov.companieshouse</groupId>
-            <artifactId>structured-logging</artifactId>
-            <exclusions>
-                <!-- not required, use logback instead -->
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-simple</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- test -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-kafka-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers-kafka</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers-junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.boot.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -198,11 +12,11 @@
                         </goals>
                     </execution>
                 </executions>
+                <groupId>org.springframework.boot</groupId>
+                <version>${spring.boot.version}</version>
             </plugin>
             <plugin>
-                <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
-                <version>${jib-maven-plugin.version}</version>
                 <configuration>
                     <containerizingMode>packaged</containerizingMode>
                     <from>
@@ -212,75 +26,266 @@
                         <image>416670754337.dkr.ecr.eu-west-2.amazonaws.com/chs-kafka-api-java:latest</image>
                     </to>
                 </configuration>
+                <groupId>com.google.cloud.tools</groupId>
+                <version>${jib-maven-plugin.version}</version>
             </plugin>
             <plugin>
-                <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>pre-unit-test</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
                         <configuration>
                             <propertyName>surefireArgLine</propertyName>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>pre-integration-test</id>
-                        <phase>pre-integration-test</phase>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                        <configuration>
-                            <propertyName>failsafeArgLine</propertyName>
-                        </configuration>
+                        <id>pre-unit-test</id>
                     </execution>
                     <execution>
-                        <id>post-integration-test</id>
-                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <id>post-unit-test</id>
+                        <phase>verify</phase>
+                    </execution>
+                    <execution>
+                        <configuration>
+                            <propertyName>failsafeArgLine</propertyName>
+                        </configuration>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <id>pre-integration-test</id>
+                        <phase>pre-integration-test</phase>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <id>post-integration-test</id>
+                        <phase>verify</phase>
                     </execution>
                 </executions>
+                <groupId>org.jacoco</groupId>
+                <version>${jacoco-maven-plugin.version}</version>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <argLine>${surefireArgLine} -Dfile.encoding=UTF-8</argLine>
                     <skipTests>${skip.unit.tests}</skipTests>
                 </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>${maven-surefire-plugin.version}</version>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${maven-failsafe-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
                 <configuration>
                     <argLine>${failsafeArgLine} -Dfile.encoding=UTF-8</argLine>
                     <classesDirectory>${project.build.outputDirectory}</classesDirectory>
                     <skipITs>${skip.integration.tests}</skipITs>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <phase>integration-test</phase>
+                    </execution>
+                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>${maven-failsafe-plugin.version}</version>
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+        <!-- external -->
+        <dependency>
+            <artifactId>jackson-annotations</artifactId>
+            <groupId>com.fasterxml.jackson.core</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>jackson-core</artifactId>
+            <groupId>tools.jackson.core</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>jackson-databind</artifactId>
+            <groupId>tools.jackson.core</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <groupId>org.openapitools</groupId>
+            <version>0.2.10</version>
+        </dependency>
+        <dependency>
+            <artifactId>commons-io</artifactId>
+            <groupId>commons-io</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <groupId>jakarta.annotation</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>jakarta.validation-api</artifactId>
+            <groupId>jakarta.validation</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>avro</artifactId>
+            <groupId>org.apache.avro</groupId>
+            <version>${avro.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>commons-lang3</artifactId>
+            <groupId>org.apache.commons</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>kafka-clients</artifactId>
+            <groupId>org.apache.kafka</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <groupId>org.springframework.boot</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-starter-aspectj</artifactId>
+            <groupId>org.springframework.boot</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-starter-kafka</artifactId>
+            <groupId>org.springframework.boot</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-starter-logging</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j-api</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+            </exclusions>
+            <groupId>org.springframework.boot</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <groupId>org.springframework.boot</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.springframework.boot</groupId>
+        </dependency>
+        <!-- companies house -->
+        <dependency>
+            <artifactId>private-api-sdk-java</artifactId>
+            <exclusions>
+                <!-- not required, use logback instead -->
+                <exclusion>
+                    <artifactId>log4j-api</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+            </exclusions>
+            <groupId>uk.gov.companieshouse</groupId>
+            <version>${private-api-sdk-java.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>kafka-models</artifactId>
+            <groupId>uk.gov.companieshouse</groupId>
+        </dependency>
+        <dependency>
+            <artifactId>structured-logging</artifactId>
+            <exclusions>
+                <!-- not required, use logback instead -->
+                <exclusion>
+                    <artifactId>slf4j-simple</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+            <groupId>uk.gov.companieshouse</groupId>
+        </dependency>
+        <!-- test -->
+        <dependency>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <artifactId>spring-boot-starter-kafka-test</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <artifactId>testcontainers-kafka</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <artifactId>testcontainers</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <artifactId>testcontainers-junit-jupiter</artifactId>
+            <groupId>org.testcontainers</groupId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <artifactId>ch-dependency-bom</artifactId>
+                <groupId>uk.gov.companieshouse</groupId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${ch-dependency-bom.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>ch-test-bom</artifactId>
+                <groupId>uk.gov.companieshouse</groupId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${ch-test-bom.version}</version>
+            </dependency>
+            <dependency>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <scope>import</scope>
+                <type>pom</type>
+                <version>${spring.boot.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <modelVersion>4.0.0</modelVersion>
+    <name>chs-kafka-api-java</name>
+    <parent>
+        <artifactId>companies-house-parent</artifactId>
+        <groupId>uk.gov.companieshouse</groupId>
+        <relativePath/>
+        <version>2.1.14</version>
+    </parent>
+    <properties>
+        <!-- build -->
+        <avro.version>1.12.1</avro.version>
+        <ch-dependency-bom.version>0.1.15</ch-dependency-bom.version>
+        <ch-test-bom.version>0.1.15</ch-test-bom.version>
+        <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
+        <java.version>21</java.version>
+        <jib-maven-plugin.version>3.5.2</jib-maven-plugin.version>
+        <!-- external -->
+        <maven-failsafe-plugin.version>3.5.6</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>3.5.6</maven-surefire-plugin.version>
+        <!-- companies house -->
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <!-- test -->
+        <private-api-sdk-java.version>7.2.4</private-api-sdk-java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <spring.boot.version>4.1.0</spring.boot.version>
+    </properties>
+    <version>unversioned</version>
 </project>

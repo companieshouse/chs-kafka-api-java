@@ -1,24 +1,23 @@
 package uk.gov.companieshouse.chskafka.resourcechanged;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import uk.gov.companieshouse.api.chskafka.ChangedResource;
-import uk.gov.companieshouse.api.chskafka.ChangedResourceEvent;
-import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
-import uk.gov.companieshouse.stream.ResourceChanged;
-
-import java.util.List;
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+
+import java.util.List;
+import java.util.Map;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import uk.gov.companieshouse.api.chskafka.ChangedResource;
+import uk.gov.companieshouse.api.chskafka.ChangedResourceEvent;
+import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
+import uk.gov.companieshouse.stream.ResourceChanged;
 
 @ExtendWith(MockitoExtension.class)
 class ResourceChangedMapperTest {
@@ -82,7 +81,8 @@ class ResourceChangedMapperTest {
         Map<String, String> deletedData = Map.of("status", "dissolved");
         ChangedResource request = createRequest("deleted", deletedData);
 
-        when(objectMapper.writeValueAsString(any())).thenThrow(new JsonProcessingException("boom") {});
+        when(objectMapper.writeValueAsString(any())).thenThrow(new JacksonException("boom") {
+        });
 
         assertThrows(InvalidPayloadException.class, () -> mapper.map(request));
     }

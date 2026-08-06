@@ -1,22 +1,24 @@
 package uk.gov.companieshouse.chskafka.messagesend;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static uk.gov.companieshouse.chskafka.Application.LOGGER;
+
 import email.message_send;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.companieshouse.api.chskafka.MessageSend;
 import uk.gov.companieshouse.api.chskafka.MessageSendData;
 import uk.gov.companieshouse.chskafka.common.Mapper;
 import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
 import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
 
-import static uk.gov.companieshouse.chskafka.Application.LOGGER;
-
 @Component
 class MessageSendMapper implements Mapper<MessageSend, message_send> {
 
+    @Qualifier("snakeCaseMapper")
     private final ObjectMapper objectMapper;
 
-    MessageSendMapper(ObjectMapper objectMapper) {
+    MessageSendMapper(@Qualifier("snakeCaseMapper") ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 

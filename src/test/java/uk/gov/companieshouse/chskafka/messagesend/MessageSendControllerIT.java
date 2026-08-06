@@ -1,7 +1,10 @@
 package uk.gov.companieshouse.chskafka.messagesend;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import email.message_send;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,20 +15,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.companieshouse.chskafka.common.AbstractControllerIT;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 class MessageSendControllerIT extends AbstractControllerIT<message_send> {
-    @Qualifier("testObjectMapper")
+
     private final ObjectMapper objectMapper;
 
     @Autowired
-    protected MessageSendControllerIT(ObjectMapper objectMapper) {
+    protected MessageSendControllerIT(@Qualifier("testObjectMapper") ObjectMapper objectMapper) {
         super("message-send", message_send.class, message_send.getClassSchema());
         this.objectMapper = objectMapper;
     }
