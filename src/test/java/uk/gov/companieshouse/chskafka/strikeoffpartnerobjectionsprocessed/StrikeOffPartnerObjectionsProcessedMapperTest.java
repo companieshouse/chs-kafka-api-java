@@ -8,6 +8,8 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static uk.gov.companieshouse.strikeoff.partner.objections.ProcessedEventType.WITHDRAWAL;
+import static uk.gov.companieshouse.strikeoff.partner.objections.SuccessFailureIndicator.FAILURE;
 
 class StrikeOffPartnerObjectionsProcessedMapperTest {
 
@@ -52,8 +54,8 @@ class StrikeOffPartnerObjectionsProcessedMapperTest {
 
         // then
         assertEquals("CH_UNIQUE_CASE_ID_001", actual.getStrikeOffEventId());
-        assertEquals(uk.gov.companieshouse.strikeoff.partner.objections.ProcessedEventType.WITHDRAWAL, actual.getEventType());
-        assertEquals(uk.gov.companieshouse.strikeoff.partner.objections.SuccessFailureIndicator.FAILURE, actual.getSuccessFailureIndicator());
+        assertEquals(WITHDRAWAL, actual.getEventType());
+        assertEquals(FAILURE, actual.getSuccessFailureIndicator());
         assertEquals("Failed in CHIPS", actual.getErrorMessage());
         assertNull(actual.getInitialExpirationOn());
         assertEquals("12345678", actual.getCompanyNumber());

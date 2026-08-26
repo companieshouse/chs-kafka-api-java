@@ -1,5 +1,6 @@
 {
-  "eventType": "OBJECTION",
+  "eventType": "WITHDRAWAL",
   "successFailureIndicator": "SUCCESS",
   "companyNumber": "12345678"
 }
+
