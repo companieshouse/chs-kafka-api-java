@@ -9,7 +9,7 @@ locals {
   docker_repo               = "chs-kafka-api-java"
   kms_alias                 = "alias/${var.aws_profile}/environment-services-kms"
   lb_listener_rule_priority = 40
-  lb_listener_paths         = ["/private/filing-processed","/message-send","/private/resource-changed","/send-email"]
+  lb_listener_paths         = ["/private/filing-processed","/message-send","/private/resource-changed","/send-email", "/private/strike-off-partner-objections-processed"]
   healthcheck_path          = "/healthcheck"
   healthcheck_matcher       = "200"
   vpc_name                  = local.stack_secrets["vpc_name"]

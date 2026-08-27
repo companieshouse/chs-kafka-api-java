@@ -1,0 +1,8 @@
+{
+  "strike_off_event_id": "550e8400-e29b-41d4-a716-446655440000",
+  "success_failure_indicator": "SUCCESS",
+  "error_message": null,
+  "event_type": "OBJECTION",
+  "initial_expiration_on": { "int": 20757 },
+  "company_number": "12345678"
+}

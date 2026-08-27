@@ -5,7 +5,7 @@ import org.apache.avro.Schema;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
-import org.apache.avro.reflect.ReflectDatumReader;
+import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.commons.io.IOUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -78,7 +78,7 @@ public abstract class AbstractControllerIT<T> {
     protected T readAndDeserialise(String filename) throws IOException {
         String expectedJson = readResource(filename);
         Decoder decoder = DecoderFactory.get().jsonDecoder(schema, expectedJson);
-        DatumReader<T> reader = new ReflectDatumReader<>(type);
+        DatumReader<T> reader = new SpecificDatumReader<>(type);
         return reader.read(null, decoder);
     }
 
@@ -100,7 +100,7 @@ public abstract class AbstractControllerIT<T> {
                 .value();
 
         Decoder decoder = DecoderFactory.get().binaryDecoder(actualBytes, null);
-        DatumReader<T> reader = new ReflectDatumReader<>(type);
+        DatumReader<T> reader = new SpecificDatumReader<>(type);
         return reader.read(null, decoder);
     }
 

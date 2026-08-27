@@ -66,17 +66,23 @@ The Email Send feature enables internal services to send email fields to the app
 endpoint. Incoming requests containing a SendEmail Java model are validated, mapped to the Avro email_send schema, and 
 published to the email-send Kafka topic.
 
+### Strike Off Partner Objections Processed Feature Flow
+
+The Strike Off Partner Objections Processed feature allows internal services to submit strike-off partner objection
+processing outcomes via a dedicated HTTP POST endpoint. Incoming requests containing a
+ProcessedStrikeOffPartnerObjection Java model are validated, mapped to the Avro
+StrikeOffPartnerObjectionsProcessed schema, and published to the strike-off-partner-objections-processed Kafka topic.
+
 ### Endpoints Overview
 
 
-| Endpoint URI                | HTTP Method | Request Body Model | Avro Model Published | Kafka Topic      |
-|-----------------------------|-------------|--------------------|----------------------|------------------|
-| `/private/filing-processed` | POST        | ProcessedFiling    | FilingProcessed      | filing-processed |
-| `/private/resource-changed` | POST        | ChangedResource    | ResourceChanged      | resource-changed |
-| `/message-send`             | POST        | MessageSend        | message_send         | message-send     |
-| `/send-email`               | POST        | SendEmail          | email_send           | email-send       |
-
-### Error Handling
+| Endpoint URI                                              | HTTP Method | Request Body Model                   | Avro Model Published                     | Kafka Topic                                 |
+|-----------------------------------------------------------|-------------|--------------------------------------|------------------------------------------|---------------------------------------------|
+| `/private/filing-processed`                               | POST        | ProcessedFiling                      | FilingProcessed                          | filing-processed                            |
+| `/private/resource-changed`                               | POST        | ChangedResource                      | ResourceChanged                          | resource-changed                            |
+| `/private/strike-off-partner-objections-processed`        | POST        | ProcessedStrikeOffPartnerObjection   | StrikeOffPartnerObjectionsProcessed      | strike-off-partner-objections-processed     |
+| `/message-send`                                           | POST        | MessageSend                          | message_send                             | message-send                                |
+| `/send-email`                                             | POST        | SendEmail                            | email_send                               | email-send                                  |
 
 Error handling in this service is designed to provide clear, consistent feedback to API clients and to ensure robust
 processing of requests.
@@ -126,10 +132,11 @@ These instructions are for a local docker environment.
 
 ### Environment Variables
 
-| Variable               | Description                                   | Example          |
-|------------------------|-----------------------------------------------|------------------|
-| PORT                   | The port at which the service is hosted       | 8081             |
-| BOOTSTRAP_SERVER_URL   | The URL to the Kafka broker                   | localhost:9092   |
-| FILING_PROCESSED_TOPIC | The Kafka topic for filing processed messages | filing-processed |
-| MESSAGE_SEND_TOPIC     | The Kafka topic for message send messages     | message-send     |
+| Variable                                      | Description                                                        | Example                                     |
+|-----------------------------------------------|--------------------------------------------------------------------|---------------------------------------------|
+| PORT                                          | The port at which the service is hosted                            | 8081                                        |
+| BOOTSTRAP_SERVER_URL                          | The URL to the Kafka broker                                        | localhost:9092                              |
+| FILING_PROCESSED_TOPIC                        | The Kafka topic for filing processed messages                      | filing-processed                            |
+| STRIKE_OFF_PARTNER_OBJECTIONS_PROCESSED_TOPIC | The Kafka topic for strike-off partner objections processed events | strike-off-partner-objections-processed     |
+| MESSAGE_SEND_TOPIC                            | The Kafka topic for message send messages                          | message-send                                |
 
