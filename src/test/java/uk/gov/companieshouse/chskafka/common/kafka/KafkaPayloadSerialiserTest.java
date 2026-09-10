@@ -10,6 +10,8 @@ import static org.mockito.Mockito.spy;
 
 import java.io.IOException;
 import org.apache.avro.io.DatumWriter;
+import org.apache.avro.util.ClassSecurityValidator;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
@@ -23,6 +25,14 @@ import uk.gov.companieshouse.filing.processed.SubmissionRecord;
 
 @ExtendWith(MockitoExtension.class)
 class KafkaPayloadSerialiserTest {
+
+    @BeforeAll
+    static void startKafka() {
+        // Avro 1.12+ requires explicit class trust for serialization.
+        // This accepts all classes. Long term, we could consider using the schema registry to avoid
+        // runtime class validation entirely. However, that would make integration testing more complex.
+        ClassSecurityValidator.setGlobal((clazz -> true));
+    }
 
     @Mock
     private DatumWriter<FilingProcessed> writer;

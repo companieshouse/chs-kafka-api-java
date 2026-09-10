@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.chskafka.common.kafka;
 
 import java.util.Map;
+import org.apache.avro.util.ClassSecurityValidator;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,10 @@ public class KafkaProducerConfigFactory {
     private final String bootstrapAddress;
 
     public KafkaProducerConfigFactory(@Value("${kafka.bootstrap-servers}") String bootstrapAddress) {
+        // Avro 1.12+ requires explicit class trust for serialization.
+        // This accepts all classes. Long term, we could consider using the schema registry to avoid
+        // runtime class validation entirely. However, that would make integration testing more complex.
+        ClassSecurityValidator.setGlobal((clazz -> true));
         this.bootstrapAddress = bootstrapAddress;
     }
 
