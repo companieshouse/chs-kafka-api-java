@@ -7,7 +7,7 @@
     <parent>
         <groupId>uk.gov.companieshouse</groupId>
         <artifactId>companies-house-parent</artifactId>
-        <version>2.1.14</version>
+        <version>2.1.20</version>
         <relativePath/>
     </parent>
     <properties>
@@ -19,17 +19,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- external -->
-        <spring.boot.version>4.1.0</spring.boot.version>
-        <avro.version>1.12.1</avro.version>
-        <jackson.nullable.version>0.2.10</jackson.nullable.version>
+        <spring.boot.version>4.1.1</spring.boot.version>
+        <!-- Avro 1.12.2 includes breaking changes -->
+        <!-- See https://avro.apache.org/blog/2026/08/12/avro-1.12.2/#:~:text=values%20and%20collections-,Breaking%20Changes,-Java -->
+        <avro.version>1.12.2</avro.version>
+        <jackson.nullable.version>0.2.11</jackson.nullable.version>
         <!-- companies house -->
         <kafka-models.version>3.0.40</kafka-models.version>
-        <ch-dependency-bom.version>0.1.15</ch-dependency-bom.version>
-        <ch-test-bom.version>0.1.15</ch-test-bom.version>
-        <private-api-sdk-java.version>7.2.20</private-api-sdk-java.version>
+        <ch-dependency-bom.version>0.1.21</ch-dependency-bom.version>
+        <ch-test-bom.version>0.1.21</ch-test-bom.version>
+        <private-api-sdk-java.version>7.2.26</private-api-sdk-java.version>
         <!-- test -->
-        <maven-failsafe-plugin.version>3.5.6</maven-failsafe-plugin.version>
-        <maven-surefire-plugin.version>3.5.6</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.6.0</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>3.6.0</maven-surefire-plugin.version>
         <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
         <jib-maven-plugin.version>3.5.2</jib-maven-plugin.version>
     </properties>
@@ -56,22 +58,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- Fix CVE-2026-66299 -->
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-core</artifactId>
-                <version>11.0.24</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-el</artifactId>
-                <version>11.0.24</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-websocket</artifactId>
-                <version>11.0.24</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -81,8 +67,8 @@
             <artifactId>jackson-annotations</artifactId>
         </dependency>
         <dependency>
-            <artifactId>jackson-databind-nullable</artifactId>
             <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson.nullable.version}</version>
         </dependency>
         <dependency>
@@ -188,16 +174,6 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers-kafka</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
