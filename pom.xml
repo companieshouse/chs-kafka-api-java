@@ -40,6 +40,12 @@
     </properties>
     <dependencyManagement>
         <dependencies>
+            <!-- Resolves CVE-2026-59949 - will be fixed in kafka-clients 4.3.2 release -->
+            <dependency>
+                <groupId>at.yawk.lz4</groupId>
+                <artifactId>lz4-java</artifactId>
+                <version>1.11.2</version>
+            </dependency>
             <dependency>
                 <groupId>uk.gov.companieshouse</groupId>
                 <artifactId>ch-dependency-bom</artifactId>
