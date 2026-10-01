@@ -1,5 +1,7 @@
 package uk.gov.companieshouse.chskafka.sendemail;
 
+import static uk.gov.companieshouse.chskafka.Application.LOGGER;
+
 import email.email_send;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -11,8 +13,6 @@ import uk.gov.companieshouse.api.chskafka.SendEmail;
 import uk.gov.companieshouse.chskafka.common.Controller;
 import uk.gov.companieshouse.chskafka.common.Service;
 import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
-
-import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 
 @RestController
 class SendEmailController implements Controller<SendEmail> {

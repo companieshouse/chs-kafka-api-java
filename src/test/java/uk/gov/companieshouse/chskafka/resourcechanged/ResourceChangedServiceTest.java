@@ -1,5 +1,7 @@
 package uk.gov.companieshouse.chskafka.resourcechanged;
 
+import static org.mockito.Mockito.verify;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,8 +11,6 @@ import uk.gov.companieshouse.api.chskafka.ChangedResource;
 import uk.gov.companieshouse.chskafka.common.Mapper;
 import uk.gov.companieshouse.chskafka.common.kafka.KafkaProducer;
 import uk.gov.companieshouse.stream.ResourceChanged;
-
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class ResourceChangedServiceTest {
