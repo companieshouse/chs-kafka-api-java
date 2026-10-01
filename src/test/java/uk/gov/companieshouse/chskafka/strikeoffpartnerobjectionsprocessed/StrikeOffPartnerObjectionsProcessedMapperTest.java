@@ -1,15 +1,14 @@
 package uk.gov.companieshouse.chskafka.strikeoffpartnerobjectionsprocessed;
 
-import org.junit.jupiter.api.Test;
-import uk.gov.companieshouse.api.chskafka.ProcessedStrikeOffPartnerObjection;
-import uk.gov.companieshouse.strikeoff.partner.objections.StrikeOffPartnerObjectionsProcessed;
-
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static uk.gov.companieshouse.strikeoff.partner.objections.ProcessedEventType.WITHDRAWAL;
 import static uk.gov.companieshouse.strikeoff.partner.objections.SuccessFailureIndicator.FAILURE;
+
+import java.time.LocalDate;
+import org.junit.jupiter.api.Test;
+import uk.gov.companieshouse.api.chskafka.ProcessedStrikeOffPartnerObjection;
+import uk.gov.companieshouse.strikeoff.partner.objections.StrikeOffPartnerObjectionsProcessed;
 
 class StrikeOffPartnerObjectionsProcessedMapperTest {
 

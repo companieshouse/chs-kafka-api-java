@@ -1,16 +1,16 @@
 package uk.gov.companieshouse.chskafka.strikeoffpartnerobjectionsprocessed;
 
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.ResultActions;
-import uk.gov.companieshouse.chskafka.common.AbstractControllerIT;
-import uk.gov.companieshouse.strikeoff.partner.objections.StrikeOffPartnerObjectionsProcessed;
-
-import org.springframework.http.HttpStatus;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.ResultActions;
+import uk.gov.companieshouse.chskafka.common.AbstractControllerIT;
+import uk.gov.companieshouse.strikeoff.partner.objections.StrikeOffPartnerObjectionsProcessed;
 
 @SpringBootTest
 class StrikeOffPartnerObjectionsProcessedControllerIT extends AbstractControllerIT<StrikeOffPartnerObjectionsProcessed> {

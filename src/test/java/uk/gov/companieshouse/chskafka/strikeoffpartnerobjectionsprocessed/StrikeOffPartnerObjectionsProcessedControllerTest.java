@@ -1,6 +1,9 @@
 package uk.gov.companieshouse.chskafka.strikeoffpartnerobjectionsprocessed;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,12 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import tools.jackson.databind.ObjectMapper;
 import uk.gov.companieshouse.api.chskafka.ProcessedStrikeOffPartnerObjection;
 import uk.gov.companieshouse.chskafka.common.exception.ControllerExceptionHandler;
-
-import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class StrikeOffPartnerObjectionsProcessedControllerTest {

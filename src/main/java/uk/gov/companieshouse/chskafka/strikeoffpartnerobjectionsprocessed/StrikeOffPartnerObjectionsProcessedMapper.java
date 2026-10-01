@@ -1,13 +1,12 @@
 package uk.gov.companieshouse.chskafka.strikeoffpartnerobjectionsprocessed;
 
+import java.time.LocalDate;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.chskafka.ProcessedStrikeOffPartnerObjection;
 import uk.gov.companieshouse.chskafka.common.Mapper;
 import uk.gov.companieshouse.strikeoff.partner.objections.ProcessedEventType;
 import uk.gov.companieshouse.strikeoff.partner.objections.StrikeOffPartnerObjectionsProcessed;
 import uk.gov.companieshouse.strikeoff.partner.objections.SuccessFailureIndicator;
-
-import java.time.LocalDate;
 
 @Component
 public class StrikeOffPartnerObjectionsProcessedMapper implements Mapper<ProcessedStrikeOffPartnerObjection, StrikeOffPartnerObjectionsProcessed> {

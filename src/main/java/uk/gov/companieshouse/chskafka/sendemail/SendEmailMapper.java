@@ -1,12 +1,11 @@
 package uk.gov.companieshouse.chskafka.sendemail;
 
 import email.email_send;
+import java.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.chskafka.SendEmail;
 import uk.gov.companieshouse.chskafka.common.LocalDateTimeSupplier;
 import uk.gov.companieshouse.chskafka.common.Mapper;
-
-import java.time.format.DateTimeFormatter;
 
 
 @Component

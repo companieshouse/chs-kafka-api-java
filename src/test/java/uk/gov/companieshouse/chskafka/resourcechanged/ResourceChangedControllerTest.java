@@ -1,5 +1,9 @@
 package uk.gov.companieshouse.chskafka.resourcechanged;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,11 +15,6 @@ import uk.gov.companieshouse.api.chskafka.ChangedResourceEvent;
 import uk.gov.companieshouse.chskafka.common.Service;
 import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
 import uk.gov.companieshouse.stream.ResourceChanged;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class ResourceChangedControllerTest {

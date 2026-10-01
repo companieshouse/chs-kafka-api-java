@@ -1,5 +1,7 @@
 package uk.gov.companieshouse.chskafka.resourcechanged;
 
+import static uk.gov.companieshouse.chskafka.Application.LOGGER;
+
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +13,6 @@ import uk.gov.companieshouse.chskafka.common.Controller;
 import uk.gov.companieshouse.chskafka.common.Service;
 import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
 import uk.gov.companieshouse.stream.ResourceChanged;
-
-import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 
 @RestController
 class ResourceChangedController implements Controller<ChangedResource> {

@@ -1,5 +1,7 @@
 package uk.gov.companieshouse.chskafka.strikeoffpartnerobjectionsprocessed;
 
+import static uk.gov.companieshouse.chskafka.Application.LOGGER;
+
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,8 +14,6 @@ import uk.gov.companieshouse.chskafka.common.Controller;
 import uk.gov.companieshouse.chskafka.common.Service;
 import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
 import uk.gov.companieshouse.strikeoff.partner.objections.StrikeOffPartnerObjectionsProcessed;
-
-import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 
 @RestController
 public class StrikeOffPartnerObjectionsProcessedController implements Controller<ProcessedStrikeOffPartnerObjection> {
