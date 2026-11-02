@@ -26,15 +26,15 @@
         <!-- Avro 1.12.2 includes breaking changes -->
         <!-- See https://avro.apache.org/blog/2026/08/12/avro-1.12.2/#:~:text=values%20and%20collections-,Breaking%20Changes,-Java -->
         <avro.version>1.12.2</avro.version>
-        <jackson.nullable.version>0.2.11</jackson.nullable.version>
+        <jackson.nullable.version>0.2.13</jackson.nullable.version>
         <!-- companies house -->
         <ch-dependency-bom.version>0.1.34</ch-dependency-bom.version>
         <ch-test-bom.version>0.1.34</ch-test-bom.version>
         <private-api-sdk-java.version>7.2.26</private-api-sdk-java.version>
         <!-- test -->
-        <maven-failsafe-plugin.version>3.6.0</maven-failsafe-plugin.version>
-        <maven-surefire-plugin.version>3.6.0</maven-surefire-plugin.version>
-        <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
+        <maven-failsafe-plugin.version>3.6.1</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>3.6.1</maven-surefire-plugin.version>
+        <jacoco-maven-plugin.version>0.8.16</jacoco-maven-plugin.version>
         <jib-maven-plugin.version>3.5.2</jib-maven-plugin.version>
     </properties>
     <dependencyManagement>
