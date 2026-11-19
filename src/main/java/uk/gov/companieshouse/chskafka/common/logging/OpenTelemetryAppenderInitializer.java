@@ -1,4 +1,4 @@
-package uk.gov.companieshouse.chskafka.common.config;
+package uk.gov.companieshouse.chskafka.common.logging;
 
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender;
