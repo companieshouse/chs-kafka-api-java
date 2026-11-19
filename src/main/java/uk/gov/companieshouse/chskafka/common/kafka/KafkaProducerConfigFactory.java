@@ -34,6 +34,7 @@ public class KafkaProducerConfigFactory {
                 new KafkaPayloadSerialiser<>(type));
 
         KafkaTemplate<String, K> kafkaTemplate = new KafkaTemplate<>(producerFactory);
+        kafkaTemplate.setObservationEnabled(true);
         return new KafkaProducer<>(topic, kafkaTemplate);
     }
 }

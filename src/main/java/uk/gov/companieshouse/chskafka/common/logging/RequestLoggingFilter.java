@@ -1,6 +1,5 @@
 package uk.gov.companieshouse.chskafka.common.logging;
 
-
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 import static uk.gov.companieshouse.chskafka.Application.LOGGER;
 import static uk.gov.companieshouse.logging.util.LogContextProperties.REQUEST_ID;
@@ -23,6 +22,7 @@ import uk.gov.companieshouse.logging.util.RequestLogger;
 public class RequestLoggingFilter extends OncePerRequestFilter implements RequestLogger {
 
     private static final String HEALTHCHECK_PATH = "/healthcheck"; // NOSONAR
+    private static final String METRICS_PATH = "/metrics"; // NOSONAR
 
     @Override
     protected void doFilterInternal(@Nonnull HttpServletRequest request,
@@ -42,6 +42,6 @@ public class RequestLoggingFilter extends OncePerRequestFilter implements Reques
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return HEALTHCHECK_PATH.equals(request.getRequestURI());
+        return HEALTHCHECK_PATH.equals(request.getRequestURI()) || METRICS_PATH.equals(request.getRequestURI());
     }
 }

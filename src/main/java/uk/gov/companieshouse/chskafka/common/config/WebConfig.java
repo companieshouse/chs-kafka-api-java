@@ -13,6 +13,7 @@ class WebConfig implements WebMvcConfigurer {
 
     private static final String ERROR_PATH = "/error"; // NOSONAR
     private static final String HEALTHCHECK_PATH = "/healthcheck"; // NOSONAR
+    private static final String METRICS_PATH = "/metrics"; // NOSONAR
 
     private final AuthInterceptor authInterceptor;
 
@@ -24,7 +25,8 @@ class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .excludePathPatterns(ERROR_PATH)
-                .excludePathPatterns(HEALTHCHECK_PATH);
+                .excludePathPatterns(HEALTHCHECK_PATH)
+                .excludePathPatterns(METRICS_PATH);
     }
 
     @Override
