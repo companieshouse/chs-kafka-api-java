@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.api.chskafka.ProcessedStrikeOffPartnerObjection;
-import uk.gov.companieshouse.chskafka.common.exception.BadGatewayException;
 import uk.gov.companieshouse.chskafka.common.kafka.KafkaProducer;
 import uk.gov.companieshouse.strikeoff.partner.objections.StrikeOffPartnerObjectionsProcessed;
 
@@ -56,7 +55,7 @@ class StrikeOffPartnerObjectionsProcessedServiceTest {
     }
 
     @Test
-    void shouldThrowBadGatewayExceptionWhenKafkaPublishFails() {
+    void shouldPropagateExceptionWhenKafkaPublishFails() {
         // given
         StrikeOffPartnerObjectionsProcessed kafkaModel = new StrikeOffPartnerObjectionsProcessed();
         doThrow(new RuntimeException("kafka down"))
