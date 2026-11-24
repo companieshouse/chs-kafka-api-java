@@ -27,9 +27,7 @@ public class KafkaProducerConfigFactory {
         ProducerFactory<String, K> producerFactory = new DefaultKafkaProducerFactory<>(
                 Map.of(
                         ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress,
-                        ProducerConfig.ACKS_CONFIG, "all",
-                        ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
-                        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaPayloadSerialiser.class),
+                        ProducerConfig.ACKS_CONFIG, "all"),
                 new StringSerializer(),
                 new KafkaPayloadSerialiser<>(type));
 
