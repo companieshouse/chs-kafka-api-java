@@ -41,12 +41,12 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {BadGatewayException.class})
     public ProblemDetail handleBadGateway(BadGatewayException ex) {
         LOGGER.error("Error calling downstream service", ex, DataMapHolder.getLogMap());
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_GATEWAY, ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_GATEWAY,"Internal server error");
     }
 
     @ExceptionHandler(value = {Exception.class, InvalidPayloadException.class})
     public ProblemDetail handleInternalServerError(Exception ex) {
-        LOGGER.error(ex.getClass().getName(), ex, DataMapHolder.getLogMap());
-        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        LOGGER.error("Unhandled exception in controller" , ex, DataMapHolder.getLogMap());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error");
     }
 }
