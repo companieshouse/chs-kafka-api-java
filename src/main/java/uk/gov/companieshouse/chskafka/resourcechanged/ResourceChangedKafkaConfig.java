@@ -10,10 +10,10 @@ import uk.gov.companieshouse.stream.ResourceChanged;
 
 @Configuration
 class ResourceChangedKafkaConfig implements KafkaConfig<ResourceChanged> {
-    @Bean(name = "resourceChangedProducerFactory")
+    @Bean(name = "resourceChangedProducer")
     @Override
     public KafkaProducer<ResourceChanged> kafkaProducer(@Value("${kafka.topic.resource-changed}") String topic,
                                                         KafkaProducerConfigFactory producerConfigFactory) {
         return producerConfigFactory.kafkaProducer(topic, ResourceChanged.class);
-}
+    }
 }

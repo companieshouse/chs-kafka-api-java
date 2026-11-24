@@ -18,7 +18,6 @@ class ResourceChangedMapper implements Mapper<ChangedResource, ResourceChanged> 
 
     private static final String EMPTY_STRING = "";
 
-    @Qualifier("objectMapper")
     private final ObjectMapper mapper;
 
     public ResourceChangedMapper(@Qualifier("objectMapper") ObjectMapper mapper) {

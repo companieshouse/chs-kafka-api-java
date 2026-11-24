@@ -11,7 +11,7 @@ import uk.gov.companieshouse.chskafka.common.kafka.KafkaProducerConfigFactory;
 @Configuration
 class SendEmailKafkaConfig implements KafkaConfig<email_send> {
 
-    @Bean(name = "emailSendProducerFactory")
+    @Bean(name = "emailSendProducer")
     @Override
     public KafkaProducer<email_send> kafkaProducer(@Value("${kafka.topic.email-send}") String topic,
                                                    KafkaProducerConfigFactory producerConfigFactory) {

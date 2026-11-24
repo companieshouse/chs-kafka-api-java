@@ -11,7 +11,7 @@ import uk.gov.companieshouse.filing.processed.FilingProcessed;
 @Configuration
 class FilingProcessedKafkaConfig implements KafkaConfig<FilingProcessed> {
 
-    @Bean(name = "filingProcessedProducerFactory")
+    @Bean(name = "filingProcessedProducer")
     @Override
     public KafkaProducer<FilingProcessed> kafkaProducer(@Value("${kafka.topic.filing-processed}") String topic,
             KafkaProducerConfigFactory producerConfigFactory) {
