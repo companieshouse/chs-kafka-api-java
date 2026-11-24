@@ -27,11 +27,9 @@ public class StrikeOffPartnerObjectionsProcessedController implements Controller
     @PostMapping(value = "/private/strike-off-partner-objections-processed", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> processRequest(@Valid @RequestBody ProcessedStrikeOffPartnerObjection request) {
         DataMapHolder.get()
-                .companyNumber(request.getCompanyNumber()).data(request.toString());
+                .companyNumber(request.getCompanyNumber()).requestId(request.getStrikeOffEventId());
         LOGGER.info("Received Objection processed event", DataMapHolder.getLogMap());
         service.processAndPublish(request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
-
 }
