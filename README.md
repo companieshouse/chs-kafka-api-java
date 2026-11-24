@@ -136,7 +136,9 @@ These instructions are for a local docker environment.
 |-----------------------------------------------|--------------------------------------------------------------------|---------------------------------------------|
 | PORT                                          | The port at which the service is hosted                            | 8081                                        |
 | BOOTSTRAP_SERVER_URL                          | The URL to the Kafka broker                                        | localhost:9092                              |
+| KAFKA_PRODUCER_MAX_BLOCK_MS                   | Maximum time to wait for producer metadata/buffer availability     | 5000                                        |
+| KAFKA_PRODUCER_REQUEST_TIMEOUT_MS             | Timeout for a single Kafka broker request                          | 5000                                        |
+| KAFKA_PRODUCER_DELIVERY_TIMEOUT_MS            | Total time to deliver a record (must be >= linger + request)       | 10000                                       |
 | FILING_PROCESSED_TOPIC                        | The Kafka topic for filing processed messages                      | filing-processed                            |
 | STRIKE_OFF_PARTNER_OBJECTIONS_PROCESSED_TOPIC | The Kafka topic for strike-off partner objections processed events | strike-off-partner-objections-processed     |
 | MESSAGE_SEND_TOPIC                            | The Kafka topic for message send messages                          | message-send                                |
-
