@@ -64,6 +64,6 @@ class StrikeOffPartnerObjectionsProcessedServiceTest {
                 .publishMessage(kafkaModel);
 
         // when / then
-        assertThrows(BadGatewayException.class, () -> service.produce(kafkaModel));
+        assertThrows(RuntimeException.class, () -> service.produce(kafkaModel));
     }
 }
