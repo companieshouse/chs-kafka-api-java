@@ -49,7 +49,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {InvalidPayloadException.class})
     public ProblemDetail handleInvalidPayloadException(InvalidPayloadException ex) {
         LOGGER.error("Invalid Payload exception in controller" , ex, DataMapHolder.getLogMap());
-        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Invalid payload");
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid payload");
     }
 
     @ExceptionHandler(value = {Exception.class})
