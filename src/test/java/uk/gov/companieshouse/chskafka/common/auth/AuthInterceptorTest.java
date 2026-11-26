@@ -20,6 +20,7 @@ class AuthInterceptorTest {
 
     private static final String USER = "user";
     private static final String STREAM = "stream";
+    static final String OAUTH2_IDENTITY_TYPE = "oauth2";
 
     @InjectMocks
     private AuthInterceptor authInterceptor;
@@ -100,7 +101,7 @@ class AuthInterceptorTest {
     void preHandleReturnsFalseIfEricIdentitySetAndIdentityTypeOAuth() {
         // given
         when(request.getHeader(AuthConstants.ERIC_IDENTITY)).thenReturn(USER);
-        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(AuthConstants.OAUTH2_IDENTITY_TYPE);
+        when(request.getHeader(AuthConstants.ERIC_IDENTITY_TYPE)).thenReturn(OAUTH2_IDENTITY_TYPE);
 
         // when
         boolean actual = authInterceptor.preHandle(request, response, handler);

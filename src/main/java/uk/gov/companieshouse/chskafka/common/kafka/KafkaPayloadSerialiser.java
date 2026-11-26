@@ -9,7 +9,7 @@ import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.reflect.ReflectDatumWriter;
 import org.apache.kafka.common.serialization.Serializer;
-import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
+import uk.gov.companieshouse.chskafka.common.exception.SerDesException;
 import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
 
 public class KafkaPayloadSerialiser<T> implements Serializer<T> {
@@ -30,7 +30,7 @@ public class KafkaPayloadSerialiser<T> implements Serializer<T> {
         } catch (IOException ex) {
             final String msg = "Error serialising message payload";
             LOGGER.error(msg, ex, DataMapHolder.getLogMap());
-            throw new InvalidPayloadException(msg, ex);
+            throw new SerDesException(msg, ex);
         }
         return outputStream.toByteArray();
     }

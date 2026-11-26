@@ -11,7 +11,7 @@ import uk.gov.companieshouse.strikeoff.partner.objections.StrikeOffPartnerObject
 @Configuration
 class StrikeOffPartnerObjectionsProcessedKafkaConfig implements KafkaConfig<StrikeOffPartnerObjectionsProcessed> {
 
-    @Bean(name = "strikeOffPartnerObjectionsProcessedFactory")
+    @Bean(name = "strikeOffPartnerObjectionsProcessed")
     @Override
     public KafkaProducer<StrikeOffPartnerObjectionsProcessed> kafkaProducer(@Value("${kafka.topic.strike-off-partner-objections-processed}") String topic,
             KafkaProducerConfigFactory producerConfigFactory) {

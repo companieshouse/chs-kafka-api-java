@@ -15,7 +15,7 @@ import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import uk.gov.companieshouse.api.chskafka.MessageSend;
 import uk.gov.companieshouse.api.chskafka.MessageSendData;
-import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
+import uk.gov.companieshouse.chskafka.common.exception.SerDesException;
 
 @ExtendWith(MockitoExtension.class)
 class MessageSendMapperTest {
@@ -55,7 +55,7 @@ class MessageSendMapperTest {
     }
 
     @Test
-    void map_shouldThrowInvalidPayloadExceptionOnSerializationError() throws Exception {
+    void map_shouldThrowSerDesExceptionOnSerializationError() throws Exception {
         MessageSendMapper mapper = new MessageSendMapper(objectMapper);
 
         MessageSend request = createMessageSend();
@@ -63,8 +63,8 @@ class MessageSendMapperTest {
         when(objectMapper.writeValueAsString(any())).thenThrow(new JacksonException("fail") {
         });
 
-        InvalidPayloadException ex = assertThrows(
-                InvalidPayloadException.class,
+        SerDesException ex = assertThrows(
+                SerDesException.class,
                 () -> mapper.map(request)
         );
         assertTrue(ex.getMessage().contains(MESSAGE_ID));

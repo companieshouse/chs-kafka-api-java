@@ -22,6 +22,8 @@ import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
+    public static final String INTERNAL_SERVER_ERROR = "Internal server error";
+
     // Custom bad request logging and response body
     @Override
     protected @Nullable ResponseEntity<@NonNull Object> handleMethodArgumentNotValid(@NonNull MethodArgumentNotValidException ex,
@@ -41,12 +43,18 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {BadGatewayException.class})
     public ProblemDetail handleBadGateway(BadGatewayException ex) {
         LOGGER.error("Error calling downstream service", ex, DataMapHolder.getLogMap());
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_GATEWAY, ex.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_GATEWAY, INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(value = {Exception.class, InvalidPayloadException.class})
+    @ExceptionHandler(value = {SerDesException.class})
+    public ProblemDetail handleSerDesException(SerDesException ex) {
+        LOGGER.error("Serialisation or deserialisation error in controller", ex, DataMapHolder.getLogMap());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = {Exception.class})
     public ProblemDetail handleInternalServerError(Exception ex) {
-        LOGGER.error(ex.getClass().getName(), ex, DataMapHolder.getLogMap());
-        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        LOGGER.error("Unhandled exception in controller" , ex, DataMapHolder.getLogMap());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
     }
 }

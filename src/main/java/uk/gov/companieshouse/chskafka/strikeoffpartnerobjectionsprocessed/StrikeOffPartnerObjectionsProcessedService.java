@@ -3,7 +3,6 @@ package uk.gov.companieshouse.chskafka.strikeoffpartnerobjectionsprocessed;
 import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.api.chskafka.ProcessedStrikeOffPartnerObjection;
 import uk.gov.companieshouse.chskafka.common.Service;
-import uk.gov.companieshouse.chskafka.common.exception.BadGatewayException;
 import uk.gov.companieshouse.chskafka.common.kafka.KafkaProducer;
 import uk.gov.companieshouse.strikeoff.partner.objections.StrikeOffPartnerObjectionsProcessed;
 
@@ -27,11 +26,5 @@ public class StrikeOffPartnerObjectionsProcessedService implements Service<Proce
     }
 
     @Override
-    public void produce(StrikeOffPartnerObjectionsProcessed kafkaModel) {
-        try {
-            kafkaProducer.publishMessage(kafkaModel);
-        } catch (Exception e) {
-            throw new BadGatewayException("Failed to publish message to Kafka", e);
-        }
-    }
+    public void produce(StrikeOffPartnerObjectionsProcessed kafkaModel) {kafkaProducer.publishMessage(kafkaModel);}
 }

@@ -11,7 +11,7 @@ import uk.gov.companieshouse.chskafka.common.kafka.KafkaProducerConfigFactory;
 @Configuration
 class MessageSendKafkaConfig implements KafkaConfig<message_send> {
 
-    @Bean(name = "messageSendProducerFactory")
+    @Bean(name = "messageSendProducer")
     @Override
     public KafkaProducer<message_send> kafkaProducer(@Value("${kafka.topic.message-send}") String topic,
             KafkaProducerConfigFactory producerConfigFactory) {

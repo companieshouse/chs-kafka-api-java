@@ -16,7 +16,7 @@ import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import uk.gov.companieshouse.api.chskafka.ChangedResource;
 import uk.gov.companieshouse.api.chskafka.ChangedResourceEvent;
-import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
+import uk.gov.companieshouse.chskafka.common.exception.SerDesException;
 import uk.gov.companieshouse.stream.ResourceChanged;
 
 @ExtendWith(MockitoExtension.class)
@@ -84,7 +84,7 @@ class ResourceChangedMapperTest {
         when(objectMapper.writeValueAsString(any())).thenThrow(new JacksonException("boom") {
         });
 
-        assertThrows(InvalidPayloadException.class, () -> mapper.map(request));
+        assertThrows(SerDesException.class, () -> mapper.map(request));
     }
 
     private ChangedResource createRequest(String eventType, Object deletedData) {

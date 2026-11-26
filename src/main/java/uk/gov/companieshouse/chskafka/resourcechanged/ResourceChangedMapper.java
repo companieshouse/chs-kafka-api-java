@@ -8,7 +8,7 @@ import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import uk.gov.companieshouse.api.chskafka.ChangedResource;
 import uk.gov.companieshouse.chskafka.common.Mapper;
-import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
+import uk.gov.companieshouse.chskafka.common.exception.SerDesException;
 import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
 import uk.gov.companieshouse.stream.EventRecord;
 import uk.gov.companieshouse.stream.ResourceChanged;
@@ -18,7 +18,6 @@ class ResourceChangedMapper implements Mapper<ChangedResource, ResourceChanged> 
 
     private static final String EMPTY_STRING = "";
 
-    @Qualifier("objectMapper")
     private final ObjectMapper mapper;
 
     public ResourceChangedMapper(@Qualifier("objectMapper") ObjectMapper mapper) {
@@ -46,7 +45,7 @@ class ResourceChangedMapper implements Mapper<ChangedResource, ResourceChanged> 
             } catch (JacksonException ex) {
                 final String msg = "Error serialising deletedData for contextId %s".formatted(request.getContextId());
                 LOGGER.error(msg, ex, DataMapHolder.getLogMap());
-                throw new InvalidPayloadException(msg, ex);
+                throw new SerDesException(msg, ex);
             }
         }
 

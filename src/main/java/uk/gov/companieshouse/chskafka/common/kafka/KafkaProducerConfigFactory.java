@@ -14,13 +14,23 @@ import org.springframework.stereotype.Component;
 public class KafkaProducerConfigFactory {
 
     private final String bootstrapAddress;
+    private final int maxBlockMs;
+    private final int requestTimeoutMs;
+    private final int deliveryTimeoutMs;
 
-    public KafkaProducerConfigFactory(@Value("${kafka.bootstrap-servers}") String bootstrapAddress) {
+    public KafkaProducerConfigFactory(
+            @Value("${kafka.bootstrap-servers}") String bootstrapAddress,
+            @Value("${kafka.producer.max-block-ms}") int maxBlockMs,
+            @Value("${kafka.producer.request-timeout-ms}") int requestTimeoutMs,
+            @Value("${kafka.producer.delivery-timeout-ms}") int deliveryTimeoutMs) {
         // Avro 1.12+ requires explicit class trust for serialization.
         // This accepts all classes. Long term, we could consider using the schema registry to avoid
         // runtime class validation entirely. However, that would make integration testing more complex.
         ClassSecurityValidator.setGlobal((clazz -> true));
         this.bootstrapAddress = bootstrapAddress;
+        this.maxBlockMs = maxBlockMs;
+        this.requestTimeoutMs = requestTimeoutMs;
+        this.deliveryTimeoutMs = deliveryTimeoutMs;
     }
 
     public <K> KafkaProducer<K> kafkaProducer(String topic, Class<K> type) {
@@ -28,8 +38,10 @@ public class KafkaProducerConfigFactory {
                 Map.of(
                         ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress,
                         ProducerConfig.ACKS_CONFIG, "all",
-                        ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
-                        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaPayloadSerialiser.class),
+                        ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true,
+                        ProducerConfig.MAX_BLOCK_MS_CONFIG, maxBlockMs,
+                        ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, requestTimeoutMs,
+                        ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, deliveryTimeoutMs),
                 new StringSerializer(),
                 new KafkaPayloadSerialiser<>(type));
 
