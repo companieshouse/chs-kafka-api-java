@@ -93,7 +93,7 @@ processing of requests.
       applicable.
 
 - **Custom Exceptions**
-    - **InvalidPayloadException:** Thrown when incoming requests contain malformed data.
+    - **SerDesException:** Thrown when payload serialisation or deserialisation fails.
     - **BadGatewayException:** Used to signal issues when communicating with downstream services or Kafka.
 
 - **Validation**

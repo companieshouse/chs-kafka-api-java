@@ -19,12 +19,12 @@ class ControllerExceptionHandlerTest {
     }
 
     @Test
-    void shouldReturnInvalidPayloadDetailForInvalidPayloadException() {
-        ProblemDetail response = handler.handleInvalidPayloadException(
-                new InvalidPayloadException("invalid payload", new RuntimeException()));
+    void shouldReturnInvalidPayloadDetailForSerDesException() {
+        ProblemDetail response = handler.handleSerDesException(
+                new SerDesException(ControllerExceptionHandler.INTERNAL_SERVER_ERROR, new RuntimeException()));
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getStatus());
-        assertEquals("Invalid payload", response.getDetail());
+        assertEquals(ControllerExceptionHandler.INTERNAL_SERVER_ERROR, response.getDetail());
     }
 
     @Test

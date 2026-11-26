@@ -9,7 +9,7 @@ import tools.jackson.databind.ObjectMapper;
 import uk.gov.companieshouse.api.chskafka.MessageSend;
 import uk.gov.companieshouse.api.chskafka.MessageSendData;
 import uk.gov.companieshouse.chskafka.common.Mapper;
-import uk.gov.companieshouse.chskafka.common.exception.InvalidPayloadException;
+import uk.gov.companieshouse.chskafka.common.exception.SerDesException;
 import uk.gov.companieshouse.chskafka.common.logging.DataMapHolder;
 
 @Component
@@ -33,7 +33,7 @@ class MessageSendMapper implements Mapper<MessageSend, message_send> {
         } catch (Exception ex) {
             final String msg = "Error serialising messageSendData payload for messageId %s".formatted(request.getMessageId());
             LOGGER.error(msg, ex, DataMapHolder.getLogMap());
-            throw new InvalidPayloadException(msg, ex);
+            throw new SerDesException(msg, ex);
         }
         messageSend.setCreatedAt(request.getCreatedAt());
         messageSend.setMessageType(request.getMessageType());

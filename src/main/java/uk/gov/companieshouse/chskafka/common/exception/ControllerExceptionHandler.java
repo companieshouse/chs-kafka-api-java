@@ -46,10 +46,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_GATEWAY, INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(value = {InvalidPayloadException.class})
-    public ProblemDetail handleInvalidPayloadException(InvalidPayloadException ex) {
-        LOGGER.error("Invalid Payload exception in controller" , ex, DataMapHolder.getLogMap());
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid payload");
+    @ExceptionHandler(value = {SerDesException.class})
+    public ProblemDetail handleSerDesException(SerDesException ex) {
+        LOGGER.error("Serialisation or deserialisation error in controller", ex, DataMapHolder.getLogMap());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = {Exception.class})
